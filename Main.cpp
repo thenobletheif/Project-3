@@ -24,3 +24,34 @@ void init()
 
 
 }
+
+void moveCameraUp (float amount)
+{
+
+}
+void moveCameraDown (float amount)
+{
+
+}
+
+void moveCameraLeft (float amount)
+{
+
+}
+
+void moveCameraRight (float amount)
+{
+
+}
+
+//randomizeTextures()
+//
+// Will give the 3 3D models a texture randomly out of the given
+// 10 available textures
+//
+//
+//
+void randomizeTextures()
+{
+
+}
