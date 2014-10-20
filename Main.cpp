@@ -15,6 +15,8 @@
 #include "vec.h"
 #include "LoadShaders.h"
 
+#include "Lock.h"
+
 
 //Alex: "I made dis at home" - 10/16/2014 @ 9:22PM
 void init()
