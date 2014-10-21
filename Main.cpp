@@ -2,7 +2,9 @@
 * Author: Hunter Ripsom-Gardiner
 * Date: 10/16/14 
 * Course: CSC 5210 Graphics
-* Description: A program that 
+* Description: A program that makes a 3D scene, populates 
+* it with cubes and randomly textures the cubes. Alows you
+* to rotate, retexture, and move cubes, as well as to manipulate the camera.
 */
 
 #include <GL/glew.h>
@@ -15,6 +17,9 @@
 #include "vec.h"
 #include "LoadShaders.h"
 
+#include "Cube.h"
+#include "lodepng.h"
+
 
 using std::cout;
 using std::endl;
@@ -25,19 +30,37 @@ using std::cerr;
 enum { PLACEHOLDER_VAO, NUM_VAOS };
 // Buffers
 enum { PLACEHOLDER_BUFFER, NUM_BUFFERS };
+// textures
+enum { PLACEHOLDER_TEXTURE, NUM_TEXTURES };
+
+// Data is stored in these arrays
+GLuint VAOs[ NUM_VAOS ];
+GLuint Buffers[ NUM_BUFFERS ];
+GLuint Textures[ NUM_TEXTURES ];
 
 int curentCube = 0;
 int numCubes = 3;
 const int WINDOW_X = 512;
 const int WINDOW_Y = 512;
 
-// Data is stored in these arrays
-GLuint VAOs[ NUM_VAOS ];
-GLuint Buffers[ NUM_BUFFERS ];
-
 void init()
 {
+	//generates NUM_TEXTURES number of ID's to be stored
+	//in the array called "textures"
+	glGenTextures(NUM_TEXTURES, Textures);
+	//says use the GL_TEXTURE_RECTANGLE format for the texture ID stored in
+	//textures sub PLACEHOLDER_TEXTURE
+	glBindTexture(GL_TEXTURE_RECTANGLE, Textures[PLACEHOLDER_TEXTURE]);
 
+	
+
+	glGenBuffers(NUM_BUFFERS, Buffers);
+	glBindBuffer(GL_ARRAY_BUFFER, PLACEHOLDER_BUFFER);
+
+	glGenVertexArrays(NUM_VAOS, VAOs);
+	//vertex array objexts can only be generated one way, so the bind 
+	//function does not need to take in a format for the Vertex Array Object
+	glBindVertexArray(VAOs[PLACEHOLDER_VAO]);
 }
 
 void display()
@@ -69,6 +92,11 @@ void keyboard(unsigned char key, int x, int y)
 {
 	switch( key ) 
 	{
+	case 'q':
+	case 'Q':
+		exit(0);
+		break;
+
 	case 'm':	//switch to next object
 	case 'M':
 		curentCube += 1;
