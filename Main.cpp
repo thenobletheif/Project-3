@@ -126,6 +126,7 @@ void keyboard(unsigned char key, int x, int y)
 	glutPostRedisplay();
 }
 
+//a function that handles the arrow keys.
 void SpecialInput(int key, int x, int y)
 {
 	switch(key)
@@ -177,3 +178,5 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+
+
