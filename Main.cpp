@@ -19,6 +19,7 @@
 
 #include "Cube.h"
 #include "lodepng.h"
+#include <vector>
 
 
 using std::cout;
@@ -203,6 +204,13 @@ int main(int argc, char* argv[])
 	glutMotionFunc(mouseMove); 
 	glutKeyboardFunc( keyboard ); 
 	glutMainLoop();
+
+	//Load raw pixel data into texture vectors
+	unsigned width;
+	unsigned height;
+	std::vector<unsigned char> exampleTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
+
+	lodepng::decode(exampleTexture, width, height, "exampleTexture.png");
 
 	return 0;
 }
