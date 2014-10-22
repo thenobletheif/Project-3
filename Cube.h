@@ -16,12 +16,30 @@
 #include "vgl.h"
 #include "vec.h"
 #include "LoadShaders.h"
+#include <vector>
 
 class Cube{
 public:
 	Cube();
+
 	Cube(float);
+
+	void scale(float);			//Scales the model by a given factor
+
+	void rotate(float);			//Rotates the model by a given amount
+
+	void translateUp(float);	//Translates the model up by a given amount
+
+	void translateDown(float);	//Translates the model down by a given amount
+
+	void translateLeft(float);	//Translates the model left by a given amount
+
+	void translateRight(float);	//Translates the model right by a given amount
+
+	void retexture(std::vector<GLuint>);	//changes the current texture to a new given texture
+
 private:
 	float length;	//the length of the side of the cube
-	GLuint textureID;	//the id for the cube's texture
+	std::vector<GLuint> textureID();	//the id for the cube's texture
+
 };
