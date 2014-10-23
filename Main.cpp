@@ -39,19 +39,19 @@ GLuint VAOs[ NUM_VAOS ];
 GLuint Buffers[ NUM_BUFFERS ];
 GLuint Textures[ NUM_TEXTURES ];
 
-int curentCube = 0;
+int currentCube = 0;
 int numCubes = 3;
 const int WINDOW_X = 512;
 const int WINDOW_Y = 512;
 
-std::vector<GLfloat> vertices;
+GLfloat vertices[72][4];
 Cube* models[3];
 
 void init()
 { 
 	models[0] = new Cube(0.3, -0.65, 0.15, 0);
-	models[0] = new Cube(0.3, -0.15, 0.15, 0);
-	models[0] = new Cube(0.3, 0.35, 0.15, 0);
+	models[1] = new Cube(0.3, -0.15, 0.15, 0);
+	models[2] = new Cube(0.3, 0.35, 0.15, 0);
 
 
 
@@ -99,19 +99,39 @@ void init()
 
 void updateVertices()
 {
+	GLfloat** tempArray;
+
+	for (int i = 0; i < 3; i++)
+	{
+		tempArray = models[i] -> getVertices();
+		for (int j = 0; j < 24; j++)
+		{
+			for (int h = 0; h < 4; h++)
+			{
+				vertices[j + (i * 24)][h] = tempArray[j][h];
+			}
+		}
+		delete(tempArray);
+	}
 
 }
 
 void display()
 {
-	GLfloat* tempArray;
+	glClear(GL_COLOR_BUFFER_BIT);
+	glBindVertexArray(VAOs[PLACEHOLDER_VAO]);
 
-	/*
-	tempArray = models[0].getVertices();
-	*/
+	// Update the point size/line width if necessary
+	glLineWidth(2);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
+	glDrawArrays(GL_TRIANGLE_STRIP, 24, 24);
+	glDrawArrays(GL_TRIANGLE_STRIP, 48, 24);
 
+
+	glBindBuffer( GL_ARRAY_BUFFER, PLACEHOLDER_BUFFER );
+	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
 	// Clear the screen
-	glClear( GL_COLOR_BUFFER_BIT );
+	glFlush();
 }
 
 //A function to handle mouse input
@@ -142,8 +162,8 @@ void keyboard(unsigned char key, int x, int y)
 
 	case 'm':	//switch to next object
 	case 'M':
-		curentCube += 1;
-		curentCube %= numCubes;
+		currentCube += 1;
+		currentCube %= numCubes;
 		break;
 
 	//scaling section of code

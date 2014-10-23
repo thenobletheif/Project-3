@@ -20,36 +20,117 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	//initialize all nescesary points for the cube
 
 	//Set up the array
-	vertices = new GLuint*[8];
+	vertices = new GLfloat*[24];
 	for (int i = 0; i < 8; i++)
-		vertices[i] = new GLuint[4];
+		vertices[i] = new GLfloat[4];
 
 	//Assume that the given point is the top right point with the greatest z value, assign the vertices their values
-	for (int i = 0; i < 8; i++)		//For each vertex, set each scale to 1 and set the appropriate z values
-	{
+	for (int i = 0; i < 24; i++)		//For each vertex, set each scale to 1 and set the appropriate z values
 		vertices[i][3] = 1;
-
-		if (i < 4)
-			vertices[i][2] = z;
-		else
-			vertices[i][2] = z - sideLength;
-	}
 	
 	//Assign both sides their corrosponding x and y values
-	for (int i = 0; i < 8; i += 4)
-	{
-		vertices[i][0] = x;
-		vertices[i][1] = y;
 
-		vertices[i + 1][0] = x;
-		vertices[i + 1][1] = y - sideLength;
+	//Side 1
+	vertices[0][0] = x;
+	vertices[0][1] = y;
+	vertices[0][2] = z;
 
-		vertices[i + 2][0] = x - sideLength;
-		vertices[i + 2][1] = y - sideLength;
+	vertices[1][0] = x;
+	vertices[1][1] = y - sideLength;
+	vertices[1][2] = z;
 
-		vertices[i + 3][0] = x - sideLength;
-		vertices[i + 3][1] = y;
-	}
+	vertices[2][0] = x - sideLength;
+	vertices[2][1] = y;
+	vertices[2][2] = z;
+
+	vertices[3][0] = x - sideLength;
+	vertices[3][1] = y - sideLength;
+	vertices[3][2] = z;
+
+	//Side 2
+	vertices[0][0] = x;
+	vertices[0][1] = y;
+	vertices[0][2] = z;
+
+	vertices[1][0] = x;
+	vertices[1][1] = y;
+	vertices[1][2] = z - sideLength;
+
+	vertices[2][0] = x - sideLength;
+	vertices[2][1] = y;
+	vertices[2][2] = z;
+
+	vertices[3][0] = x - sideLength;
+	vertices[3][1] = y;
+	vertices[3][2] = z - sideLength;
+
+	//Side 3
+	vertices[0][0] = x;
+	vertices[0][1] = y;
+	vertices[0][2] = z - sideLength;
+
+	vertices[1][0] = x;
+	vertices[1][1] = y - sideLength;
+	vertices[1][2] = z - sideLength;
+
+	vertices[2][0] = x - sideLength;
+	vertices[2][1] = y;
+	vertices[2][2] = z - sideLength;
+
+	vertices[3][0] = x - sideLength;
+	vertices[3][1] = y - sideLength;
+	vertices[3][2] = z - sideLength;
+
+	//Side 4
+	vertices[0][0] = x;
+	vertices[0][1] = y - sideLength;
+	vertices[0][2] = z;
+
+	vertices[1][0] = x;
+	vertices[1][1] = y - sideLength;
+	vertices[1][2] = z - sideLength;
+
+	vertices[2][0] = x - sideLength;
+	vertices[2][1] = y - sideLength;
+	vertices[2][2] = z;
+
+	vertices[3][0] = x - sideLength;
+	vertices[3][1] = y - sideLength;
+	vertices[3][2] = z - sideLength;
+
+	//Side 5
+	vertices[0][0] = x;
+	vertices[0][1] = y;
+	vertices[0][2] = z;
+
+	vertices[1][0] = x;
+	vertices[1][1] = y;
+	vertices[1][2] = z - sideLength;
+
+	vertices[2][0] = x;
+	vertices[2][1] = y - sideLength;
+	vertices[2][2] = z;
+
+	vertices[3][0] = x;
+	vertices[3][1] = y - sideLength;
+	vertices[3][2] = z - sideLength;
+
+	//Side 6
+	vertices[0][0] = x - sideLength;
+	vertices[0][1] = y;
+	vertices[0][2] = z;
+
+	vertices[1][0] = x - sideLength;
+	vertices[1][1] = y;
+	vertices[1][2] = z - sideLength;
+
+	vertices[2][0] = x - sideLength;
+	vertices[2][1] = y - sideLength;
+	vertices[2][2] = z;
+
+	vertices[3][0] = x - sideLength;
+	vertices[3][1] = y - sideLength;
+	vertices[3][2] = z - sideLength;
 
 }
 
