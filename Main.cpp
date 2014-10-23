@@ -44,8 +44,17 @@ int numCubes = 3;
 const int WINDOW_X = 512;
 const int WINDOW_Y = 512;
 
+std::vector<GLfloat> vertices;
+Cube* models[3];
+
 void init()
-{
+{ 
+	models[0] = new Cube(0.3, -0.65, 0.15, 0);
+	models[0] = new Cube(0.3, -0.15, 0.15, 0);
+	models[0] = new Cube(0.3, 0.35, 0.15, 0);
+
+
+
 	//generates NUM_TEXTURES number of ID's to be stored
 	//in the array called "textures"
 	glGenTextures(NUM_TEXTURES, Textures);
@@ -62,11 +71,44 @@ void init()
 	//vertex array objexts can only be generated one way, so the bind 
 	//function does not need to take in a format for the Vertex Array Object
 	glBindVertexArray(VAOs[PLACEHOLDER_VAO]);
+
+	/*
+	//Load raw pixel data into texture vectors
+	unsigned width;
+	unsigned height;
+	std::vector<unsigned char> exampleTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
+
+	lodepng::decode(exampleTexture, width, height, "exampleTexture.png");
+	*/
+
+	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
+
+	ShaderInfo shaders[] = {
+		{GL_VERTEX_SHADER, "triangles.vert"},
+		{GL_FRAGMENT_SHADER, "triangles.frag"},
+		{GL_NONE, NULL }
+	};
+	
+	GLuint vertexOffset = 0;
+
+	GLuint program = LoadShaders( shaders );
+	glUseProgram( program );
+	glVertexAttribPointer( vertexOffset, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray( vertexOffset );
+}
+
+void updateVertices()
+{
+
 }
 
 void display()
 {
+	GLfloat* tempArray;
 
+	/*
+	tempArray = models[0].getVertices();
+	*/
 
 	// Clear the screen
 	glClear( GL_COLOR_BUFFER_BIT );
@@ -205,12 +247,7 @@ int main(int argc, char* argv[])
 	glutKeyboardFunc( keyboard ); 
 	glutMainLoop();
 
-	//Load raw pixel data into texture vectors
-	unsigned width;
-	unsigned height;
-	std::vector<unsigned char> exampleTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
-
-	lodepng::decode(exampleTexture, width, height, "exampleTexture.png");
+	
 
 	return 0;
 }

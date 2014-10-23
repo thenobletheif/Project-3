@@ -22,7 +22,7 @@ class Cube{
 public:
 	Cube();
 
-	Cube(float);
+	Cube(float, GLfloat, GLfloat, GLfloat);
 
 	void scale(float);			//Scales the model by a given factor
 
@@ -36,10 +36,12 @@ public:
 
 	void translateRight(float);	//Translates the model right by a given amount
 
-	void retexture(std::vector<GLuint>);	//changes the current texture to a new given texture
+	void setTexture(std::vector<GLuint>);	//changes the current texture to a new given texture
+
+	GLfloat** getVertices();
 
 private:
 	float length;	//the length of the side of the cube
-	std::vector<GLuint> textureID();	//the id for the cube's texture
-
+	std::vector<GLuint> textureID;	//the id for the cube's texture
+	GLfloat** vertices;
 };
