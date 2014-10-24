@@ -18,10 +18,9 @@ Cube::Cube()
 Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 {
 	//initialize all nescesary points for the cube
-
 	//Set up the array
 	vertices = new GLfloat*[24];
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 24; i++)
 		vertices[i] = new GLfloat[4];
 
 	//Assume that the given point is the top right point with the greatest z value, assign the vertices their values
