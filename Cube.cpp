@@ -43,11 +43,11 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	vertices[1][1] = y - sideLength;
 	vertices[1][2] = z;
 
-	vertices[2][0] = x - sideLength;
+	vertices[2][0] = x + sideLength;
 	vertices[2][1] = y;
 	vertices[2][2] = z;
 
-	vertices[3][0] = x - sideLength;
+	vertices[3][0] = x + sideLength;
 	vertices[3][1] = y - sideLength;
 	vertices[3][2] = z;
 
@@ -60,11 +60,11 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	vertices[5][1] = y;
 	vertices[5][2] = z - sideLength;
 
-	vertices[6][0] = x - sideLength;
+	vertices[6][0] = x + sideLength;
 	vertices[6][1] = y;
 	vertices[6][2] = z;
 
-	vertices[7][0] = x - sideLength;
+	vertices[7][0] = x + sideLength;
 	vertices[7][1] = y;
 	vertices[7][2] = z - sideLength;
 
@@ -77,11 +77,11 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	vertices[9][1] = y - sideLength;
 	vertices[9][2] = z - sideLength;
 
-	vertices[10][0] = x - sideLength;
+	vertices[10][0] = x + sideLength;
 	vertices[10][1] = y;
 	vertices[10][2] = z - sideLength;
 
-	vertices[11][0] = x - sideLength;
+	vertices[11][0] = x + sideLength;
 	vertices[11][1] = y - sideLength;
 	vertices[11][2] = z - sideLength;
 
@@ -94,11 +94,11 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	vertices[13][1] = y - sideLength;
 	vertices[13][2] = z - sideLength;
 
-	vertices[14][0] = x - sideLength;
+	vertices[14][0] = x + sideLength;
 	vertices[14][1] = y - sideLength;
 	vertices[14][2] = z;
 
-	vertices[15][0] = x - sideLength;
+	vertices[15][0] = x + sideLength;
 	vertices[15][1] = y - sideLength;
 	vertices[15][2] = z - sideLength;
 
@@ -120,19 +120,19 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	vertices[19][2] = z - sideLength;
 
 	//Side 6
-	vertices[20][0] = x - sideLength;
+	vertices[20][0] = x + sideLength;
 	vertices[20][1] = y;
 	vertices[20][2] = z;
 
-	vertices[21][0] = x - sideLength;
+	vertices[21][0] = x + sideLength;
 	vertices[21][1] = y;
 	vertices[21][2] = z - sideLength;
 
-	vertices[22][0] = x - sideLength;
+	vertices[22][0] = x + sideLength;
 	vertices[22][1] = y - sideLength;
 	vertices[22][2] = z;
 
-	vertices[23][0] = x - sideLength;
+	vertices[23][0] = x + sideLength;
 	vertices[23][1] = y - sideLength;
 	vertices[23][2] = z - sideLength;
 
