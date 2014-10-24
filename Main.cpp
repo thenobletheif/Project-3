@@ -31,9 +31,9 @@ using std::cerr;
 // Vertex array objects
 enum { PLACEHOLDER_VAO, NUM_VAOS };
 // Buffers
-enum { PLACEHOLDER_BUFFER, NUM_BUFFERS };
+enum { AXIS_BUFFER, PLACEHOLDER_BUFFER, NUM_BUFFERS };
 // textures
-enum { PLACEHOLDER_TEXTURE, NUM_TEXTURES };
+enum { AXIS_VAO, PLACEHOLDER_TEXTURE, NUM_TEXTURES };
 
 // Data is stored in these arrays
 GLuint VAOs[ NUM_VAOS ];
@@ -62,27 +62,43 @@ void randomizeTextures()
 
 void init()
 { 
+
+	glClearColor(0.0,0.0,0.0,1.0);
 	models[0] = new Cube(0.3, -0.65, 0.15, 0);
 	models[1] = new Cube(0.3, -0.15, 0.15, 0);
 	models[2] = new Cube(0.3, 0.35, 0.15, 0);
 
 
+	//An arry to represent the axis of the world.
+	//holds enpoints for the x, y, and z axis.
+	GLfloat axisVerts[8][4] = {
+		{ 1.0, 0.0, 0.0, 1.0},	//x axis
+		{ -1.0, 0.0, 0.0, 1.0 },
+		{ 0.0, 1.0, 0.0, 1.0},	//y axis
+		{ 0.0, -1.0, 0.0, 1.0 },
+		{ 1.0, 0.0, 0.0, 1.0},	//z axis only goes from 0 to 1.
+		{ 0.0, 0.0, 0.0, 1.0 } 
+	};
+
+
 	//generates NUM_TEXTURES number of ID's to be stored
 	//in the array called "Textures"
+	//does the same thing for buffer ids in "Buffers"
+	//also for vertex arrays in "VAOs"
 	glGenTextures(NUM_TEXTURES, Textures);
+	glGenBuffers(NUM_BUFFERS, Buffers);
+	glGenVertexArrays(NUM_VAOS, VAOs);
+
 	//says use the GL_TEXTURE_RECTANGLE format for the texture ID stored in
 	//textures sub PLACEHOLDER_TEXTURE
 	glBindTexture(GL_TEXTURE_RECTANGLE, Textures[PLACEHOLDER_TEXTURE]);
 
-	
-
-	glGenBuffers(NUM_BUFFERS, Buffers);
-	glBindBuffer(GL_ARRAY_BUFFER, PLACEHOLDER_BUFFER);
-
-	glGenVertexArrays(NUM_VAOS, VAOs);
 	//vertex array objexts can only be generated one way, so the bind 
 	//function does not need to take in a format for the Vertex Array Object
-	glBindVertexArray(VAOs[PLACEHOLDER_VAO]);
+	glBindVertexArray(VAOs[AXIS_VAO]);
+	glBindBuffer(GL_ARRAY_BUFFER, AXIS_BUFFER);
+	
+	glBufferData( GL_ARRAY_BUFFER, sizeof(axisVerts), axisVerts, GL_STATIC_DRAW );
 
 	/*
 	//Load raw pixel data into texture vectors
@@ -93,16 +109,13 @@ void init()
 	lodepng::decode(exampleTexture, width, height, "exampleTexture.png");
 	*/
 
-	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
-
 	ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "vertices.vert"},
-        {GL_FRAGMENT_SHADER, "fragments.frag"},
-        {GL_NONE, NULL}
-    };
+		{GL_VERTEX_SHADER, "vertices.vert"},
+		{GL_FRAGMENT_SHADER, "fragments.frag"},
+		{GL_NONE, NULL}
+	};
 	GLuint vertexOffset = 0;
 	GLuint program = LoadShaders( shaders );
-	system("PAUSE");
 	glUseProgram( program );
 	glVertexAttribPointer( vertexOffset, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 	glEnableVertexAttribArray( vertexOffset );
@@ -176,7 +189,7 @@ void keyboard(unsigned char key, int x, int y)
 		currentCube %= numCubes;
 		break;
 
-	//scaling section of code
+		//scaling section of code
 	case 'b':	//scale the object by 1.25
 	case 'B':
 		break;
@@ -184,7 +197,7 @@ void keyboard(unsigned char key, int x, int y)
 	case 'N':
 		break;
 
-	//rotation section of code
+		//rotation section of code
 	case 'c':	//rotate the object clockwise. C for clockwise
 	case 'C':
 		break;
@@ -192,7 +205,7 @@ void keyboard(unsigned char key, int x, int y)
 	case 'V':
 		break;
 
-	//move object section of code
+		//move object section of code
 	case 'a':	//move object left
 	case 'A':
 		break;
@@ -218,7 +231,7 @@ void keyboard(unsigned char key, int x, int y)
 	case 'R':
 		break;
 
-	//if any other key is pressed a message is output.
+		//if any other key is pressed a message is output.
 	default:
 		cerr << "Invalid key pressed: " << key << endl;
 		break;
@@ -232,7 +245,7 @@ void SpecialInput(int key, int x, int y)
 {
 	switch(key)
 	{
-	//pressing the buttons should move the camera while keeping it pointed at the center of the scene
+		//pressing the buttons should move the camera while keeping it pointed at the center of the scene
 	case GLUT_KEY_UP:
 		//do something here
 		break;	
@@ -277,10 +290,7 @@ int main(int argc, char* argv[])
 	glutKeyboardFunc( keyboard ); 
 	glutMainLoop();
 
-	
-
 	return 0;
 }
-
 
 
