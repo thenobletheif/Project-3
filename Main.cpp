@@ -67,7 +67,6 @@ void init()
 	models[2] = new Cube(0.3, 0.35, 0.15, 0);
 
 
-
 	//generates NUM_TEXTURES number of ID's to be stored
 	//in the array called "Textures"
 	glGenTextures(NUM_TEXTURES, Textures);
@@ -97,14 +96,13 @@ void init()
 	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
 
 	ShaderInfo shaders[] = {
-		{GL_VERTEX_SHADER, "triangles.vert"},
-		{GL_FRAGMENT_SHADER, "triangles.frag"},
-		{GL_NONE, NULL }
-	};
-	
+        {GL_VERTEX_SHADER, "vertices.vert"},
+        {GL_FRAGMENT_SHADER, "fragments.frag"},
+        {GL_NONE, NULL}
+    };
 	GLuint vertexOffset = 0;
-
 	GLuint program = LoadShaders( shaders );
+	system("PAUSE");
 	glUseProgram( program );
 	glVertexAttribPointer( vertexOffset, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 	glEnableVertexAttribArray( vertexOffset );
@@ -260,7 +258,7 @@ int main(int argc, char* argv[])
 	//constants X and Y declared at the top of the program.
 	glutInitWindowSize(WINDOW_X, WINDOW_Y); 
 	//using GLUT version 4.1. You need to use a ',' instead of a '.' because reasons.
-	glutInitContextVersion(4,1);
+	glutInitContextVersion(4, 1);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 	glutCreateWindow("Hunter and Alex's Awesome Camera Thing"); //name the window
 
