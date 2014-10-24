@@ -29,9 +29,9 @@ using std::cerr;
 
 // Enumerations
 // Vertex array objects
-enum { PLACEHOLDER_VAO, NUM_VAOS };
+enum { VERTS, NUM_VAOS };
 // Buffers
-enum { PLACEHOLDER_BUFFER, NUM_BUFFERS };
+enum { VERTS_BUFFER, NUM_BUFFERS };
 // textures
 enum { PLACEHOLDER_TEXTURE, NUM_TEXTURES };
 
@@ -47,6 +47,8 @@ const int WINDOW_Y = 512;
 
 GLfloat vertices[72][4];
 Cube* models[3];
+
+void updateVertices();
 
 //randomizeTextures()
 //
@@ -65,7 +67,7 @@ void init()
 	models[0] = new Cube(0.3, -0.65, 0.15, 0);
 	models[1] = new Cube(0.3, -0.15, 0.15, 0);
 	models[2] = new Cube(0.3, 0.35, 0.15, 0);
-
+	updateVertices();
 
 	//generates NUM_TEXTURES number of ID's to be stored
 	//in the array called "Textures"
@@ -76,13 +78,13 @@ void init()
 
 	
 
-	glGenBuffers(NUM_BUFFERS, Buffers);
-	glBindBuffer(GL_ARRAY_BUFFER, PLACEHOLDER_BUFFER);
+	
 
 	glGenVertexArrays(NUM_VAOS, VAOs);
-	//vertex array objexts can only be generated one way, so the bind 
-	//function does not need to take in a format for the Vertex Array Object
-	glBindVertexArray(VAOs[PLACEHOLDER_VAO]);
+	glBindVertexArray(VAOs[VERTS]);
+
+	glGenBuffers(NUM_BUFFERS, Buffers);
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[VERTS_BUFFER]);
 
 	/*
 	//Load raw pixel data into texture vectors
@@ -102,7 +104,6 @@ void init()
     };
 	GLuint vertexOffset = 0;
 	GLuint program = LoadShaders( shaders );
-	system("PAUSE");
 	glUseProgram( program );
 	glVertexAttribPointer( vertexOffset, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 	glEnableVertexAttribArray( vertexOffset );
@@ -111,7 +112,6 @@ void init()
 void updateVertices()
 {
 	GLfloat** tempArray;
-
 	for (int i = 0; i < 3; i++)
 	{
 		tempArray = models[i] -> getVertices();
@@ -124,23 +124,23 @@ void updateVertices()
 		}
 		delete(tempArray);
 	}
-
 }
 
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glBindVertexArray(VAOs[PLACEHOLDER_VAO]);
-
-	// Update the point size/line width if necessary
-	glLineWidth(2);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 24);
-	glDrawArrays(GL_TRIANGLE_STRIP, 24, 24);
-	glDrawArrays(GL_TRIANGLE_STRIP, 48, 24);
-
-
-	glBindBuffer( GL_ARRAY_BUFFER, PLACEHOLDER_BUFFER );
+	glBindVertexArray(VAOs[VERTS]);
+	glBindBuffer( GL_ARRAY_BUFFER, Buffers[VERTS_BUFFER] );
 	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
+
+	glLineWidth(2);
+
+	for (int i = 0; i < 18; i++)
+	{
+		glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
+	}
+
+
 	// Clear the screen
 	glFlush();
 }
@@ -258,7 +258,7 @@ int main(int argc, char* argv[])
 	//constants X and Y declared at the top of the program.
 	glutInitWindowSize(WINDOW_X, WINDOW_Y); 
 	//using GLUT version 4.1. You need to use a ',' instead of a '.' because reasons.
-	glutInitContextVersion(4, 1);
+	glutInitContextVersion(3, 3);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 	glutCreateWindow("Hunter and Alex's Awesome Camera Thing"); //name the window
 

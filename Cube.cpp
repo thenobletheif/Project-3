@@ -30,7 +30,7 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 
 	//Assume that the given point is the top right point with the greatest z value, assign the vertices their values
 	for (int i = 0; i < 24; i++)		//For each vertex, set each scale to 1 and set the appropriate z values
-		vertices[i][3] = 1;
+		vertices[i][3] = 1.0;
 	
 	//Assign both sides their corrosponding x and y values
 
@@ -52,89 +52,89 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	vertices[3][2] = z;
 
 	//Side 2
-	vertices[0][0] = x;
-	vertices[0][1] = y;
-	vertices[0][2] = z;
+	vertices[4][0] = x;
+	vertices[4][1] = y;
+	vertices[4][2] = z;
 
-	vertices[1][0] = x;
-	vertices[1][1] = y;
-	vertices[1][2] = z - sideLength;
+	vertices[5][0] = x;
+	vertices[5][1] = y;
+	vertices[5][2] = z - sideLength;
 
-	vertices[2][0] = x - sideLength;
-	vertices[2][1] = y;
-	vertices[2][2] = z;
+	vertices[6][0] = x - sideLength;
+	vertices[6][1] = y;
+	vertices[6][2] = z;
 
-	vertices[3][0] = x - sideLength;
-	vertices[3][1] = y;
-	vertices[3][2] = z - sideLength;
+	vertices[7][0] = x - sideLength;
+	vertices[7][1] = y;
+	vertices[7][2] = z - sideLength;
 
 	//Side 3
-	vertices[0][0] = x;
-	vertices[0][1] = y;
-	vertices[0][2] = z - sideLength;
+	vertices[8][0] = x;
+	vertices[8][1] = y;
+	vertices[8][2] = z - sideLength;
 
-	vertices[1][0] = x;
-	vertices[1][1] = y - sideLength;
-	vertices[1][2] = z - sideLength;
+	vertices[9][0] = x;
+	vertices[9][1] = y - sideLength;
+	vertices[9][2] = z - sideLength;
 
-	vertices[2][0] = x - sideLength;
-	vertices[2][1] = y;
-	vertices[2][2] = z - sideLength;
+	vertices[10][0] = x - sideLength;
+	vertices[10][1] = y;
+	vertices[10][2] = z - sideLength;
 
-	vertices[3][0] = x - sideLength;
-	vertices[3][1] = y - sideLength;
-	vertices[3][2] = z - sideLength;
+	vertices[11][0] = x - sideLength;
+	vertices[11][1] = y - sideLength;
+	vertices[11][2] = z - sideLength;
 
 	//Side 4
-	vertices[0][0] = x;
-	vertices[0][1] = y - sideLength;
-	vertices[0][2] = z;
+	vertices[12][0] = x;
+	vertices[12][1] = y - sideLength;
+	vertices[12][2] = z;
 
-	vertices[1][0] = x;
-	vertices[1][1] = y - sideLength;
-	vertices[1][2] = z - sideLength;
+	vertices[13][0] = x;
+	vertices[13][1] = y - sideLength;
+	vertices[13][2] = z - sideLength;
 
-	vertices[2][0] = x - sideLength;
-	vertices[2][1] = y - sideLength;
-	vertices[2][2] = z;
+	vertices[14][0] = x - sideLength;
+	vertices[14][1] = y - sideLength;
+	vertices[14][2] = z;
 
-	vertices[3][0] = x - sideLength;
-	vertices[3][1] = y - sideLength;
-	vertices[3][2] = z - sideLength;
+	vertices[15][0] = x - sideLength;
+	vertices[15][1] = y - sideLength;
+	vertices[15][2] = z - sideLength;
 
 	//Side 5
-	vertices[0][0] = x;
-	vertices[0][1] = y;
-	vertices[0][2] = z;
+	vertices[16][0] = x;
+	vertices[16][1] = y;
+	vertices[16][2] = z;
 
-	vertices[1][0] = x;
-	vertices[1][1] = y;
-	vertices[1][2] = z - sideLength;
+	vertices[17][0] = x;
+	vertices[17][1] = y;
+	vertices[17][2] = z - sideLength;
 
-	vertices[2][0] = x;
-	vertices[2][1] = y - sideLength;
-	vertices[2][2] = z;
+	vertices[18][0] = x;
+	vertices[18][1] = y - sideLength;
+	vertices[18][2] = z;
 
-	vertices[3][0] = x;
-	vertices[3][1] = y - sideLength;
-	vertices[3][2] = z - sideLength;
+	vertices[19][0] = x;
+	vertices[19][1] = y - sideLength;
+	vertices[19][2] = z - sideLength;
 
 	//Side 6
-	vertices[0][0] = x - sideLength;
-	vertices[0][1] = y;
-	vertices[0][2] = z;
+	vertices[20][0] = x - sideLength;
+	vertices[20][1] = y;
+	vertices[20][2] = z;
 
-	vertices[1][0] = x - sideLength;
-	vertices[1][1] = y;
-	vertices[1][2] = z - sideLength;
+	vertices[21][0] = x - sideLength;
+	vertices[21][1] = y;
+	vertices[21][2] = z - sideLength;
 
-	vertices[2][0] = x - sideLength;
-	vertices[2][1] = y - sideLength;
-	vertices[2][2] = z;
+	vertices[22][0] = x - sideLength;
+	vertices[22][1] = y - sideLength;
+	vertices[22][2] = z;
 
-	vertices[3][0] = x - sideLength;
-	vertices[3][1] = y - sideLength;
-	vertices[3][2] = z - sideLength;
+	vertices[23][0] = x - sideLength;
+	vertices[23][1] = y - sideLength;
+	vertices[23][2] = z - sideLength;
 
 }
 
