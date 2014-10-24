@@ -18,6 +18,7 @@
 #include "LoadShaders.h"
 
 #include "Cube.h"
+#include "Camera.h"
 #include "lodepng.h"
 #include <vector>
 
@@ -47,6 +48,18 @@ const int WINDOW_Y = 512;
 GLfloat vertices[72][4];
 Cube* models[3];
 
+//randomizeTextures()
+//
+// Will give the 3 3D models a texture randomly out of the given
+// 10 available textures
+//
+//
+//
+void randomizeTextures()
+{
+
+}
+
 void init()
 { 
 	models[0] = new Cube(0.3, -0.65, 0.15, 0);
@@ -56,7 +69,7 @@ void init()
 
 
 	//generates NUM_TEXTURES number of ID's to be stored
-	//in the array called "textures"
+	//in the array called "Textures"
 	glGenTextures(NUM_TEXTURES, Textures);
 	//says use the GL_TEXTURE_RECTANGLE format for the texture ID stored in
 	//textures sub PLACEHOLDER_TEXTURE
@@ -150,7 +163,6 @@ void mouseMove(int x, int y)
 
 //A function that handles keyboard input. takes as input the key 
 //clicked and the mouse's current position.
-
 void keyboard(unsigned char key, int x, int y)
 {
 	switch( key ) 
@@ -274,34 +286,3 @@ int main(int argc, char* argv[])
 
 
 
-
-void moveCameraUp (float amount)
-{
-
-}
-void moveCameraDown (float amount)
-{
-
-}
-
-void moveCameraLeft (float amount)
-{
-
-}
-
-void moveCameraRight (float amount)
-{
-
-}
-
-//randomizeTextures()
-//
-// Will give the 3 3D models a texture randomly out of the given
-// 10 available textures
-//
-//
-//
-void randomizeTextures()
-{
-
-}

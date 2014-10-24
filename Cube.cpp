@@ -20,6 +20,11 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	//initialize all nescesary points for the cube
 
 	//Set up the array
+	//<<<<<<
+	//This makes no sense to me. Why are you using a single 
+	//dimensional array of vertexes, and then referencing the
+	//verticies as two dimensional below that?
+	//>>>>>>>
 	vertices = new GLfloat*[24];
 	for (int i = 0; i < 8; i++)
 		vertices[i] = new GLfloat[4];
