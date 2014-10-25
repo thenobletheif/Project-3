@@ -126,6 +126,43 @@ void updateVertices()
 	}
 }
 
+
+void scaleHandler(float scale)
+{
+	models[currentCube] -> rotate(scale);
+}
+
+void rotationHandler(bool clockwise)
+{
+	int amount = 0.5;
+
+	models[currentCube] -> rotate(amount);
+}
+
+void moveHandler(int direction)
+{
+	int moveDistance = 0.1;
+
+	switch(direction)
+	{
+	case 1:
+		models[currentCube] -> translateLeft(moveDistance);
+		break;
+	case 2:
+		models[currentCube] -> translateDown(moveDistance);
+		break;
+	case 3:
+		models[currentCube] -> translateRight(moveDistance);
+		break;
+	case 4:
+		models[currentCube] -> translateUp(moveDistance);
+		break;
+	default:
+		break;
+	}
+
+}
+
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -179,31 +216,39 @@ void keyboard(unsigned char key, int x, int y)
 	//scaling section of code
 	case 'b':	//scale the object by 1.25
 	case 'B':
+		scaleHandler(1.25);
 		break;
 	case 'n':	//scale the object by .80
 	case 'N':
+		scaleHandler(0.80);
 		break;
 
 	//rotation section of code
 	case 'c':	//rotate the object clockwise. C for clockwise
 	case 'C':
+		rotationHandler(true);
 		break;
 	case 'v':	//rotate the object counterclockwise. 
 	case 'V':
+		rotationHandler(false);
 		break;
 
 	//move object section of code
 	case 'a':	//move object left
 	case 'A':
+		moveHandler(1);
 		break;
 	case 's':	//move object down
 	case 'S':
+		moveHandler(2);
 		break;
 	case 'd':	//move object right
 	case 'D':
+		moveHandler(3);
 		break;
 	case 'w':	//move object up
 	case 'W':
+		moveHandler(4);
 		break;
 
 	case 't':	//retexture all objects.
