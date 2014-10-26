@@ -18,6 +18,8 @@
 #include "LoadShaders.h"
 #include <vector>
 
+#include <vmath.h>
+
 class Cube{
 public:
 	Cube();
