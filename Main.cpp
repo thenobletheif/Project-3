@@ -132,6 +132,7 @@ void updateVertices()
 void scaleHandler(float scale)
 {
 	models[currentCube] -> scale(scale);
+	updateVertices();
 }
 
 void rotationHandler(bool clockwise)
@@ -145,6 +146,7 @@ void rotationHandler(bool clockwise)
 		amount = -0.5;
 
 	models[currentCube] -> rotate(amount);
+	updateVertices();
 }
 
 void moveHandler(int direction)
@@ -171,16 +173,16 @@ void moveHandler(int direction)
 		break;
 	}
 	
-
+	updateVertices();
 }
 
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glBindVertexArray(VAOs[VERTS]);
+
 	glBindBuffer( GL_ARRAY_BUFFER, Buffers[VERTS_BUFFER] );
 	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
-
 	glLineWidth(2);
 
 	for (int i = 0; i < 18; i++)
@@ -188,6 +190,7 @@ void display()
 		glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
 	}
 
+	
 
 	// Clear the screen
 	glFlush();

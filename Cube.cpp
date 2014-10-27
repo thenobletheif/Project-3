@@ -1,5 +1,5 @@
 /* Main.cpp
-* Author: Hunter Ripsom-Gardiner
+* Author: Hunter Ripsom-Gardiner, Alexander Deacon
 * Date: 10/16/14 
 * Course: CSC 5210 Graphics
 * Description: A class to represent a cube. Contains a constructor that 
@@ -141,15 +141,12 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 //Scales the model by a given factor
 void Cube::scale(float factor)
 {
-	//===============
-	// Default way to do it
-	/*
-	
-	int sideLength = (vertices[2][0] - vertices[0][0]) * factor;
+	float length = vertices[2][0] - vertices[0][0];
+	float newLength = length * factor;
 	//These dont work, take the difference between the new sidelength and the old sidelength and then infer how much to change these by
-	int x = vertices[0][0] - (sideLength/2);		//
-	int y = vertices[0][1] + (sideLength/2);
-	int z = vertices[0][2] + (sideLength/2);
+	float x = vertices[0][0] - ((newLength - length)/2);	
+	float y = vertices[0][1] + ((newLength - length)/2);
+	float z = vertices[0][2] + ((newLength - length)/2);
 
 
 	vertices[0][0] = x;
@@ -157,15 +154,15 @@ void Cube::scale(float factor)
 	vertices[0][2] = z;
 
 	vertices[1][0] = x;
-	vertices[1][1] = y - sideLength;
+	vertices[1][1] = y - newLength;
 	vertices[1][2] = z;
 
-	vertices[2][0] = x + sideLength;
+	vertices[2][0] = x + newLength;
 	vertices[2][1] = y;
 	vertices[2][2] = z;
 
-	vertices[3][0] = x + sideLength;
-	vertices[3][1] = y - sideLength;
+	vertices[3][0] = x + newLength;
+	vertices[3][1] = y - newLength;
 	vertices[3][2] = z;
 
 	//Side 2
@@ -175,49 +172,49 @@ void Cube::scale(float factor)
 
 	vertices[5][0] = x;
 	vertices[5][1] = y;
-	vertices[5][2] = z - sideLength;
+	vertices[5][2] = z - newLength;
 
-	vertices[6][0] = x + sideLength;
+	vertices[6][0] = x + newLength;
 	vertices[6][1] = y;
 	vertices[6][2] = z;
 
-	vertices[7][0] = x + sideLength;
+	vertices[7][0] = x + newLength;
 	vertices[7][1] = y;
-	vertices[7][2] = z - sideLength;
+	vertices[7][2] = z - newLength;
 
 	//Side 3
 	vertices[8][0] = x;
 	vertices[8][1] = y;
-	vertices[8][2] = z - sideLength;
+	vertices[8][2] = z - newLength;
 
 	vertices[9][0] = x;
-	vertices[9][1] = y - sideLength;
-	vertices[9][2] = z - sideLength;
+	vertices[9][1] = y - newLength;
+	vertices[9][2] = z - newLength;
 
-	vertices[10][0] = x + sideLength;
+	vertices[10][0] = x + newLength;
 	vertices[10][1] = y;
-	vertices[10][2] = z - sideLength;
+	vertices[10][2] = z - newLength;
 
-	vertices[11][0] = x + sideLength;
-	vertices[11][1] = y - sideLength;
-	vertices[11][2] = z - sideLength;
+	vertices[11][0] = x + newLength;
+	vertices[11][1] = y - newLength;
+	vertices[11][2] = z - newLength;
 
 	//Side 4
 	vertices[12][0] = x;
-	vertices[12][1] = y - sideLength;
+	vertices[12][1] = y - newLength;
 	vertices[12][2] = z;
 
 	vertices[13][0] = x;
-	vertices[13][1] = y - sideLength;
-	vertices[13][2] = z - sideLength;
+	vertices[13][1] = y - newLength;
+	vertices[13][2] = z - newLength;
 
-	vertices[14][0] = x + sideLength;
-	vertices[14][1] = y - sideLength;
+	vertices[14][0] = x + newLength;
+	vertices[14][1] = y - newLength;
 	vertices[14][2] = z;
 
-	vertices[15][0] = x + sideLength;
-	vertices[15][1] = y - sideLength;
-	vertices[15][2] = z - sideLength;
+	vertices[15][0] = x + newLength;
+	vertices[15][1] = y - newLength;
+	vertices[15][2] = z - newLength;
 
 	//Side 5
 	vertices[16][0] = x;
@@ -226,34 +223,34 @@ void Cube::scale(float factor)
 
 	vertices[17][0] = x;
 	vertices[17][1] = y;
-	vertices[17][2] = z - sideLength;
+	vertices[17][2] = z - newLength;
 
 	vertices[18][0] = x;
-	vertices[18][1] = y - sideLength;
+	vertices[18][1] = y - newLength;
 	vertices[18][2] = z;
 
 	vertices[19][0] = x;
-	vertices[19][1] = y - sideLength;
-	vertices[19][2] = z - sideLength;
+	vertices[19][1] = y - newLength;
+	vertices[19][2] = z - newLength;
 
 	//Side 6
-	vertices[20][0] = x + sideLength;
+	vertices[20][0] = x + newLength;
 	vertices[20][1] = y;
 	vertices[20][2] = z;
 
-	vertices[21][0] = x + sideLength;
+	vertices[21][0] = x + newLength;
 	vertices[21][1] = y;
-	vertices[21][2] = z - sideLength;
+	vertices[21][2] = z - newLength;
 
-	vertices[22][0] = x + sideLength;
-	vertices[22][1] = y - sideLength;
+	vertices[22][0] = x + newLength;
+	vertices[22][1] = y - newLength;
 	vertices[22][2] = z;
 
-	vertices[23][0] = x + sideLength;
-	vertices[23][1] = y - sideLength;
-	vertices[23][2] = z - sideLength;
+	vertices[23][0] = x + newLength;
+	vertices[23][1] = y - newLength;
+	vertices[23][2] = z - newLength;
 	
-	*/
+	/*
 	//note that the last row uses 1.0 because that 
 	//is what the entire vertex is divided by.
 	float transform[4][4] = 
@@ -261,6 +258,7 @@ void Cube::scale(float factor)
 	  {0.0, factor, 0.0, 0.0},
 	  {0.0, 0.0, factor, 0.0},
 	  {0.0, 0.0, 0.0, 1.0} };
+	  */
 }
 
 //Rotates the model by a given amount
@@ -274,13 +272,14 @@ void Cube::translateUp(float amount)
 {
 	//===============
 	// Default way to do it
-	/*
-	for (int i = 0; i = 24; i++)
+	
+	for (int i = 0; i < 24; i++)
 	{
-		vertices[i][1] += amount;
+		vertices[i][1] = vertices[i][1] + amount;
 	}
-	*/
+	
 
+	/*
 	GLfloat GLamount = amount;
 	vmath::mat4 translationMat = vmath::translate(0.5f, 0.5f, 0.5f);
 	vmath::mat4 tempMat;
@@ -307,6 +306,7 @@ void Cube::translateUp(float amount)
 	  {0.0, 1.0, 0.0, amount},
 	  {0.0, 0.0, 1.0, 0.0},
 	  {0.0, 0.0, 0.0, 1.0} };
+	  */
 }
 
 //Translates the model down by a given amount
@@ -314,17 +314,19 @@ void Cube::translateDown(float amount)
 {
 	//===============
 	// Default way to do it
-	/*
-	for (int i = 0; i = 24; i++)
+	
+	for (int i = 0; i < 24; i++)
 	{
 		vertices[i][1] -= amount;
 	}
-	*/
+	
+	/*
 	float transform[4][4] = 
 	{ {1.0, 0.0, 0.0, 0.0},
 	  {0.0, 1.0, 0.0, -amount},
 	  {0.0, 0.0, 1.0, 0.0},
 	  {0.0, 0.0, 0.0, 1.0} };
+	  */
 }
 
 //Translates the model left by a given amount
@@ -332,17 +334,18 @@ void Cube::translateLeft(float amount)
 {
 	//===============
 	// Default way to do it
-	/*
-	for (int i = 0; i = 24; i++)
+	for (int i = 0; i < 24; i++)
 	{
 		vertices[i][0] -= amount;
 	}
-	*/
+	
+	/*
 	float transform[4][4] = 
 	{ {1.0, 0.0, 0.0, amount},
 	  {0.0, 1.0, 0.0, 0.0},
 	  {0.0, 0.0, 1.0, 0.0},
 	  {0.0, 0.0, 0.0, 1.0} };
+	  */
 }
 
 //Translates the model right by a given amount
@@ -350,17 +353,18 @@ void Cube::translateRight(float amount)
 {
 	//===============
 	// Default way to do it
-	/*
-	for (int i = 0; i = 24; i++)
+	
+	for (int i = 0; i < 24; i++)
 	{
 		vertices[i][0] += amount;
 	}
-	*/
+	/*
 	float transform[4][4] = 
 	{ {1.0, 0.0, 0.0, amount},
 	  {0.0, 1.0, 0.0, 0.0},
 	  {0.0, 0.0, 1.0, 0.0},
 	  {0.0, 0.0, 0.0, 1.0} };
+	  */
 }
 
 //changes the current texture to a new given texture
