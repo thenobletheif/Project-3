@@ -24,10 +24,11 @@ class Camera{
 public:
 	Camera(float, float, float,
 		float, float, float);
+	Camera();
 	void moveCameraUp(float);
 	void moveCameraDown(float);
 	void moveCameraLeft(float);
 	void moveCameraRight(float);
 private:
-
+	vmath::mat4 cameraFrustum;
 };

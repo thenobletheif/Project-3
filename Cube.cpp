@@ -141,7 +141,13 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 //Scales the model by a given factor
 void Cube::scale(float factor)
 {
-		
+	//note that the last row uses 1.0 because that 
+	//is what the entire vertex is divided by.
+	float transform[4][4] = 
+	{ {factor, 0.0, 0.0, 0.0},
+	  {0.0, factor, 0.0, 0.0},
+	  {0.0, 0.0, factor, 0.0},
+	  {0.0, 0.0, 0.0, 1.0} };
 }
 
 //Rotates the model by a given amount
@@ -176,24 +182,41 @@ void Cube::translateUp(float amount)
 		}
 		//system("PAUSE");
 	}
+	float transform[4][4] = 
+	{ {1.0, 0.0, 0.0, 0.0},
+	  {0.0, 1.0, 0.0, amount},
+	  {0.0, 0.0, 1.0, 0.0},
+	  {0.0, 0.0, 0.0, 1.0} };
 }
 
 //Translates the model down by a given amount
 void Cube::translateDown(float amount)
 {
-
+	float transform[4][4] = 
+	{ {1.0, 0.0, 0.0, 0.0},
+	  {0.0, 1.0, 0.0, -amount},
+	  {0.0, 0.0, 1.0, 0.0},
+	  {0.0, 0.0, 0.0, 1.0} };
 }
 
 //Translates the model left by a given amount
 void Cube::translateLeft(float amount)
 {
-
+	float transform[4][4] = 
+	{ {1.0, 0.0, 0.0, amount},
+	  {0.0, 1.0, 0.0, 0.0},
+	  {0.0, 0.0, 1.0, 0.0},
+	  {0.0, 0.0, 0.0, 1.0} };
 }
 
 //Translates the model right by a given amount
 void Cube::translateRight(float amount)
 {
-
+	float transform[4][4] = 
+	{ {1.0, 0.0, 0.0, amount},
+	  {0.0, 1.0, 0.0, 0.0},
+	  {0.0, 0.0, 1.0, 0.0},
+	  {0.0, 0.0, 0.0, 1.0} };
 }
 
 //changes the current texture to a new given texture

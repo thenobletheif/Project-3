@@ -46,6 +46,8 @@ int numCubes = 3;
 const int WINDOW_X = 512;
 const int WINDOW_Y = 512;
 
+Camera hunterCam = Camera();
+
 GLfloat vertices[72][4];
 Cube* models[3];
 
@@ -134,14 +136,20 @@ void scaleHandler(float scale)
 
 void rotationHandler(bool clockwise)
 {
-	int amount = 0.5;
+	//if the cube is rotating clockwise rotate 0.5 units
+	//otherwise rotate -0.5 units.
+	float amount = 0.0;
+	if(clockwise)
+		amount = 0.5;
+	else
+		amount = -0.5;
 
 	models[currentCube] -> rotate(amount);
 }
 
 void moveHandler(int direction)
 {
-	int moveDistance = 0.1;
+	float moveDistance = 0.1;
 
 	switch(direction)
 	{
@@ -158,6 +166,8 @@ void moveHandler(int direction)
 		models[currentCube] -> translateUp(moveDistance);
 		break;
 	default:
+		cout<< "ERROR: Somehow you are trying to move in the " <<endl;
+			cout <<"wrong dirrection. See move handler in main." <<endl;
 		break;
 	}
 	
@@ -297,6 +307,9 @@ void SpecialInput(int key, int x, int y)
 
 int main(int argc, char* argv[])
 {
+	//enables depth test to draw things in the right order on the screen.
+	glEnable(GL_DEPTH_TEST);
+
 	glutInit(&argc, argv);
 	//the display mode is in red, green, blue, transparancy mode.
 	glutInitDisplayMode(GLUT_RGBA);

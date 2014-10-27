@@ -19,6 +19,8 @@
 #include <vector>
 #include <vmath.h>
 
+#include <vmath.h>
+
 class Cube{
 private:
 	float length;	//the length of the side of the cube
