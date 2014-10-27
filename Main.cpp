@@ -21,6 +21,7 @@
 #include "Camera.h"
 #include "lodepng.h"
 #include <vector>
+#include <vmath.h>
 
 
 using std::cout;
@@ -64,9 +65,9 @@ void randomizeTextures()
 
 void init()
 { 
-	models[0] = new Cube(0.3, -0.65, 0.15, 0);
-	models[1] = new Cube(0.3, -0.15, 0.15, 0);
-	models[2] = new Cube(0.3, 0.35, 0.15, 0);
+	models[0] = new Cube(0.3f, -0.65f, 0.15f, 0.0f);
+	models[1] = new Cube(0.3f, -0.15f, 0.15f, 0.0f);
+	models[2] = new Cube(0.3f, 0.35f, 0.15f, 0.0f);
 	updateVertices();
 
 	//generates NUM_TEXTURES number of ID's to be stored
@@ -122,14 +123,13 @@ void updateVertices()
 				vertices[j + (i * 24)][h] = tempArray[j][h];
 			}
 		}
-		delete(tempArray);
 	}
 }
 
 
 void scaleHandler(float scale)
 {
-	models[currentCube] -> rotate(scale);
+	models[currentCube] -> scale(scale);
 }
 
 void rotationHandler(bool clockwise)
@@ -160,6 +160,7 @@ void moveHandler(int direction)
 	default:
 		break;
 	}
+	
 
 }
 

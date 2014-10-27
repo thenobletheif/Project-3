@@ -17,8 +17,14 @@
 #include "vec.h"
 #include "LoadShaders.h"
 #include <vector>
+#include <vmath.h>
 
 class Cube{
+private:
+	float length;	//the length of the side of the cube
+	std::vector<GLuint> textureID;	//the id for the cube's texture
+	GLfloat** vertices;
+
 public:
 	Cube();
 
@@ -40,8 +46,4 @@ public:
 
 	GLfloat** getVertices();
 
-private:
-	float length;	//the length of the side of the cube
-	std::vector<GLuint> textureID;	//the id for the cube's texture
-	GLfloat** vertices;
 };

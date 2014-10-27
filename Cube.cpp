@@ -30,7 +30,7 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 
 	//Assume that the given point is the top right point with the greatest z value, assign the vertices their values
 	for (int i = 0; i < 24; i++)		//For each vertex, set each scale to 1 and set the appropriate z values
-		vertices[i][3] = 1.0;
+		vertices[i][3] = 1.0f;
 	
 	//Assign both sides their corrosponding x and y values
 
@@ -147,13 +147,35 @@ void Cube::scale(float factor)
 //Rotates the model by a given amount
 void Cube::rotate(float amount)
 {
-		
+	//vmath::mat4 lehpse = vmath::rotate(1.0f, 0.0f, 0.0f, 0.5f);
 }
 
 //Translates the model up by a given amount
 void Cube::translateUp(float amount)
 {
 
+	GLfloat GLamount = amount;
+	vmath::mat4 translationMat = vmath::translate(0.5f, 0.5f, 0.5f);
+	vmath::mat4 tempMat;
+	vmath::mat4 tempVertex;
+
+
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			tempMat[j] = vertices[i][j];
+		}
+		
+		tempVertex = (vmath::mat4(tempVertex)*translationMat)[0];
+
+		for (int j = 0; j < 4; j++)
+		{
+			//std::cout << tempVertex[1][j] << "\n";
+			vertices[i][j] = tempVertex[0][j];
+		}
+		//system("PAUSE");
+	}
 }
 
 //Translates the model down by a given amount
