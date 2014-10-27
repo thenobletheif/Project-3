@@ -25,7 +25,8 @@ class Cube{
 private:
 	float length;	//the length of the side of the cube
 	std::vector<GLuint> textureID;	//the id for the cube's texture
-	GLfloat** vertices;
+	GLfloat** vertices;	//A two dimensional array of the verticies.
+						//defined as a pointer to a pointer, hence the **
 
 public:
 	Cube();

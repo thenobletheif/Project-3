@@ -19,11 +19,6 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 {
 	//initialize all nescesary points for the cube
 	//Set up the array
-	//<<<<<<
-	//This makes no sense to me. Why are you using a single 
-	//dimensional array of vertexes, and then referencing the
-	//verticies as two dimensional below that?
-	//>>>>>>>
 	vertices = new GLfloat*[24];
 	for (int i = 0; i < 24; i++)
 		vertices[i] = new GLfloat[4];
@@ -32,11 +27,11 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	for (int i = 0; i < 24; i++)		//For each vertex, set each scale to 1 and set the appropriate z values
 		vertices[i][3] = 1.0f;
 	
-	//Assign both sides their corrosponding x and y values
+	//Assign all sides their corrosponding x and y values
 
 	//Side 1
-	vertices[0][0] = x;
-	vertices[0][1] = y;
+	vertices[0][0] = x;	//sets the x, y, z value for the 
+	vertices[0][1] = y;	//first vertex of the first side.
 	vertices[0][2] = z;
 
 	vertices[1][0] = x;
@@ -143,7 +138,8 @@ void Cube::scale(float factor)
 {
 	float length = vertices[2][0] - vertices[0][0];
 	float newLength = length * factor;
-	//These dont work, take the difference between the new sidelength and the old sidelength and then infer how much to change these by
+	//These dont work, take the difference between the new sidelength 
+	//and the old sidelength and then infer how much to change these by
 	float x = vertices[0][0] - ((newLength - length)/2);	
 	float y = vertices[0][1] + ((newLength - length)/2);
 	float z = vertices[0][2] + ((newLength - length)/2);
@@ -257,22 +253,21 @@ void Cube::scale(float factor)
 	{ {factor, 0.0, 0.0, 0.0},
 	  {0.0, factor, 0.0, 0.0},
 	  {0.0, 0.0, factor, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} };
-	  */
+	  {0.0, 0.0, 0.0, 1.0} }; */
 }
 
 //Rotates the model by a given amount
 void Cube::rotate(float amount)
 {
+
 	//vmath::mat4 lehpse = vmath::rotate(1.0f, 0.0f, 0.0f, 0.5f);
 }
 
-//Translates the model up by a given amount
+//Translates the model up by amount
+//Pre: amount is defined
+//Post: all the verticies of the cube are translated up.
 void Cube::translateUp(float amount)
 {
-	//===============
-	// Default way to do it
-	
 	for (int i = 0; i < 24; i++)
 	{
 		vertices[i][1] = vertices[i][1] + amount;
@@ -281,7 +276,7 @@ void Cube::translateUp(float amount)
 
 	/*
 	GLfloat GLamount = amount;
-	vmath::mat4 translationMat = vmath::translate(0.5f, 0.5f, 0.5f);
+	vmath::mat4 translationMat = vmath::translate(0.0f, amount, 0.0f);
 	vmath::mat4 tempMat;
 	vmath::vec4 tempVertex;
 
@@ -301,70 +296,73 @@ void Cube::translateUp(float amount)
 			vertices[i][j] = tempVertex[j];
 		}
 	}
+	*/
+
+	//the needed transform matrix for reference
+	/*
 	float transform[4][4] = 
 	{ {1.0, 0.0, 0.0, 0.0},
 	  {0.0, 1.0, 0.0, amount},
 	  {0.0, 0.0, 1.0, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} };
-	  */
+	  {0.0, 0.0, 0.0, 1.0} };*/
 }
 
-//Translates the model down by a given amount
+//Translates the model down by amount
+//Pre: amount is defined.
+//Post: all the verticies in the cube are translated down by amount.
 void Cube::translateDown(float amount)
 {
-	//===============
-	// Default way to do it
-	
 	for (int i = 0; i < 24; i++)
 	{
 		vertices[i][1] -= amount;
 	}
-	
+
+	//the desired matirx for the translation
 	/*
 	float transform[4][4] = 
 	{ {1.0, 0.0, 0.0, 0.0},
 	  {0.0, 1.0, 0.0, -amount},
 	  {0.0, 0.0, 1.0, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} };
-	  */
+	  {0.0, 0.0, 0.0, 1.0} }; */
 }
 
-//Translates the model left by a given amount
+//Translates the model left by amount
+//Pre: amount is defined.
+//Post: all the verticies in the cube are translated left by amount.
 void Cube::translateLeft(float amount)
 {
-	//===============
-	// Default way to do it
 	for (int i = 0; i < 24; i++)
 	{
 		vertices[i][0] -= amount;
 	}
 	
 	/*
+	//the desired matirx for the translation
 	float transform[4][4] = 
 	{ {1.0, 0.0, 0.0, amount},
 	  {0.0, 1.0, 0.0, 0.0},
 	  {0.0, 0.0, 1.0, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} };
-	  */
+	  {0.0, 0.0, 0.0, 1.0} }; */
 }
 
-//Translates the model right by a given amount
+//Translates the model right by amount
+//Pre: amount is defined.
+//Post: all the verticies in the cube are translated right by amount.
 void Cube::translateRight(float amount)
 {
-	//===============
-	// Default way to do it
-	
 	for (int i = 0; i < 24; i++)
 	{
 		vertices[i][0] += amount;
 	}
+
+
+	//the desired matirx for the translation
 	/*
 	float transform[4][4] = 
 	{ {1.0, 0.0, 0.0, amount},
 	  {0.0, 1.0, 0.0, 0.0},
 	  {0.0, 0.0, 1.0, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} };
-	  */
+	  {0.0, 0.0, 0.0, 1.0} };*/
 }
 
 //changes the current texture to a new given texture

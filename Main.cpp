@@ -53,18 +53,17 @@ Cube* models[3];
 
 void updateVertices();
 
-//randomizeTextures()
-//
-// Will give the 3 3D models a texture randomly out of the given
+
+// Will give all the cubes a texture randomly out of the given
 // 10 available textures
-//
-//
-//
+//Pre: all the textures are initialized
+//Post: textures are randomly asigned to each cube.
 void randomizeTextures()
 {
 
 }
 
+//the initialized function.
 void init()
 { 
 	models[0] = new Cube(0.3f, -0.65f, 0.15f, 0.0f);
@@ -80,7 +79,6 @@ void init()
 	glBindTexture(GL_TEXTURE_RECTANGLE, Textures[PLACEHOLDER_TEXTURE]);
 
 	
-
 	
 
 	glGenVertexArrays(NUM_VAOS, VAOs);
@@ -112,6 +110,8 @@ void init()
 	glEnableVertexAttribArray( vertexOffset );
 }
 
+//a function that handles updating the verticies 
+//after the vertices have been updated in the cube.
 void updateVertices()
 {
 	GLfloat** tempArray;
@@ -128,13 +128,14 @@ void updateVertices()
 	}
 }
 
-
+//a handler for scaling the cube.
 void scaleHandler(float scale)
 {
 	models[currentCube] -> scale(scale);
 	updateVertices();
 }
 
+//a handler for rotating the cube
 void rotationHandler(bool clockwise)
 {
 	//if the cube is rotating clockwise rotate 0.5 units
@@ -149,6 +150,7 @@ void rotationHandler(bool clockwise)
 	updateVertices();
 }
 
+//a handler for moving the cubes
 void moveHandler(int direction)
 {
 	float moveDistance = 0.1;
@@ -176,6 +178,7 @@ void moveHandler(int direction)
 	updateVertices();
 }
 
+//the display function.
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
