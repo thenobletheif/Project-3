@@ -140,7 +140,7 @@ void rotationHandler(bool clockwise)
 {
 	//if the cube is rotating clockwise rotate 0.5 units
 	//otherwise rotate -0.5 units.
-	float amount = 0.0;
+	float amount;
 	if(clockwise)
 		amount = 0.5;
 	else

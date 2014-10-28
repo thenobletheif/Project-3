@@ -17,6 +17,7 @@ Cube::Cube()
 
 Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 {
+	length = sideLength;
 	//initialize all nescesary points for the cube
 	//Set up the array
 	vertices = new GLfloat*[24];
@@ -35,15 +36,15 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	vertices[0][2] = z;
 
 	vertices[1][0] = x;
-	vertices[1][1] = y - sideLength;
+	vertices[1][1] = y - length;
 	vertices[1][2] = z;
 
-	vertices[2][0] = x + sideLength;
+	vertices[2][0] = x + length;
 	vertices[2][1] = y;
 	vertices[2][2] = z;
 
-	vertices[3][0] = x + sideLength;
-	vertices[3][1] = y - sideLength;
+	vertices[3][0] = x + length;
+	vertices[3][1] = y - length;
 	vertices[3][2] = z;
 
 	//Side 2
@@ -53,49 +54,49 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 
 	vertices[5][0] = x;
 	vertices[5][1] = y;
-	vertices[5][2] = z - sideLength;
+	vertices[5][2] = z - length;
 
-	vertices[6][0] = x + sideLength;
+	vertices[6][0] = x + length;
 	vertices[6][1] = y;
 	vertices[6][2] = z;
 
-	vertices[7][0] = x + sideLength;
+	vertices[7][0] = x + length;
 	vertices[7][1] = y;
-	vertices[7][2] = z - sideLength;
+	vertices[7][2] = z - length;
 
 	//Side 3
 	vertices[8][0] = x;
 	vertices[8][1] = y;
-	vertices[8][2] = z - sideLength;
+	vertices[8][2] = z - length;
 
 	vertices[9][0] = x;
-	vertices[9][1] = y - sideLength;
-	vertices[9][2] = z - sideLength;
+	vertices[9][1] = y - length;
+	vertices[9][2] = z - length;
 
-	vertices[10][0] = x + sideLength;
+	vertices[10][0] = x + length;
 	vertices[10][1] = y;
-	vertices[10][2] = z - sideLength;
+	vertices[10][2] = z - length;
 
-	vertices[11][0] = x + sideLength;
-	vertices[11][1] = y - sideLength;
-	vertices[11][2] = z - sideLength;
+	vertices[11][0] = x + length;
+	vertices[11][1] = y - length;
+	vertices[11][2] = z - length;
 
 	//Side 4
 	vertices[12][0] = x;
-	vertices[12][1] = y - sideLength;
+	vertices[12][1] = y - length;
 	vertices[12][2] = z;
 
 	vertices[13][0] = x;
-	vertices[13][1] = y - sideLength;
-	vertices[13][2] = z - sideLength;
+	vertices[13][1] = y - length;
+	vertices[13][2] = z - length;
 
-	vertices[14][0] = x + sideLength;
-	vertices[14][1] = y - sideLength;
+	vertices[14][0] = x + length;
+	vertices[14][1] = y - length;
 	vertices[14][2] = z;
 
-	vertices[15][0] = x + sideLength;
-	vertices[15][1] = y - sideLength;
-	vertices[15][2] = z - sideLength;
+	vertices[15][0] = x + length;
+	vertices[15][1] = y - length;
+	vertices[15][2] = z - length;
 
 	//Side 5
 	vertices[16][0] = x;
@@ -104,42 +105,41 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 
 	vertices[17][0] = x;
 	vertices[17][1] = y;
-	vertices[17][2] = z - sideLength;
+	vertices[17][2] = z - length;
 
 	vertices[18][0] = x;
-	vertices[18][1] = y - sideLength;
+	vertices[18][1] = y - length;
 	vertices[18][2] = z;
 
 	vertices[19][0] = x;
-	vertices[19][1] = y - sideLength;
-	vertices[19][2] = z - sideLength;
+	vertices[19][1] = y - length;
+	vertices[19][2] = z - length;
 
 	//Side 6
-	vertices[20][0] = x + sideLength;
+	vertices[20][0] = x + length;
 	vertices[20][1] = y;
 	vertices[20][2] = z;
 
-	vertices[21][0] = x + sideLength;
+	vertices[21][0] = x + length;
 	vertices[21][1] = y;
-	vertices[21][2] = z - sideLength;
+	vertices[21][2] = z - length;
 
-	vertices[22][0] = x + sideLength;
-	vertices[22][1] = y - sideLength;
+	vertices[22][0] = x + length;
+	vertices[22][1] = y - length;
 	vertices[22][2] = z;
 
-	vertices[23][0] = x + sideLength;
-	vertices[23][1] = y - sideLength;
-	vertices[23][2] = z - sideLength;
+	vertices[23][0] = x + length;
+	vertices[23][1] = y - length;
+	vertices[23][2] = z - length;
 
 }
 
 //Scales the model by a given factor
 void Cube::scale(float factor)
 {
+	/*
 	float length = vertices[2][0] - vertices[0][0];
 	float newLength = length * factor;
-	//These dont work, take the difference between the new sidelength 
-	//and the old sidelength and then infer how much to change these by
 	float x = vertices[0][0] - ((newLength - length)/2);	
 	float y = vertices[0][1] + ((newLength - length)/2);
 	float z = vertices[0][2] + ((newLength - length)/2);
@@ -245,22 +245,92 @@ void Cube::scale(float factor)
 	vertices[23][0] = x + newLength;
 	vertices[23][1] = y - newLength;
 	vertices[23][2] = z - newLength;
+	*/
+	GLfloat GLfactor = factor;
+
+	vmath::mat4 translationMat = vmath::scale(GLfactor);
+	vmath::vec4 tempVec;
+
+	float previousX = vertices[0][0] + length/2.0;
+	float previousY = vertices[0][1] - length/2.0;
+	float previousZ = vertices[0][2] - length/2.0;
 	
-	/*
-	//note that the last row uses 1.0 because that 
-	//is what the entire vertex is divided by.
-	float transform[4][4] = 
-	{ {factor, 0.0, 0.0, 0.0},
-	  {0.0, factor, 0.0, 0.0},
-	  {0.0, 0.0, factor, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} }; */
+	for (int i = 0; i < 24; i++)
+	{
+		vertices[i][0] = vertices[i][0] - previousX;
+		vertices[i][1] = vertices[i][1] - previousY;
+		vertices[i][2] = vertices[i][2] - previousZ;
+	}
+
+	
+	//Scales each vertice of the array
+	for (int i = 0; i < 24; i++)
+	{
+		//Set each value of the temporary vector to 0, for use with this current vertex
+		for (int j = 0; j < 4; j++)
+			tempVec[j] = 0;
+
+		//Perform the matrix multiplication and store the resulting vector
+		for (int j = 0; j < 4; j++)
+		{
+			for (int k = 0; k < 4; k++)
+			{
+				tempVec[j] += vertices[i][k] * translationMat[j][k];
+			}
+		}
+
+		//Copy the new values into the main array of vertices
+		for (int j = 0; j < 4; j++)
+			vertices[i][j] = tempVec[j];
+	}
+	
+	for (int i = 0; i < 24; i++)
+	{
+		vertices[i][0] = vertices[i][0] + previousX;
+		vertices[i][1] = vertices[i][1] + previousY;
+		vertices[i][2] = vertices[i][2] + previousZ;
+	}
 }
 
 //Rotates the model by a given amount
-void Cube::rotate(float amount)
-{
+void Cube::rotate(float angle)
+{	
+	GLfloat GLangle = angle;
 
-	//vmath::mat4 lehpse = vmath::rotate(1.0f, 0.0f, 0.0f, 0.5f);
+	vmath::mat4 translationMat = vmath::rotate(GLangle, 0.0f, 0.0f, 1.0f);
+	vmath::vec4 tempVec;
+
+	//float cameraX = 0.0;
+	//float cameraY = 0.0;
+	//float cameraZ = -1.0;
+	
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 4; j++)
+			tempVec[j] = 0;
+
+		for (int j = 0; j < 4; j++)
+		{
+			for (int k = 0; k < 4; k++)
+			{
+				tempVec[j] += vertices[i][k] * translationMat[j][k];
+			}
+		}
+
+		for (int j = 0; j < 4; j++)
+			vertices[i][j] = tempVec[j];
+
+	}
+	/*
+	vmath::vec4 tempVertex;
+	tempVertex[0] =
+		(0 * (cameraY * cameraY + cameraZ * cameraZ) - cameraX * (0 * cameraY + 0 * cameraZ - tempVec[0] * cameraX - tempVec[1] * cameraY - tempVec[2] * cameraZ)) * (1 - cos(angle)) + tempVec[0] * cos(angle) + sin(angle) * ( -1.0 * 0 * cameraY + 0 * cameraZ - cameraZ * tempVec[1] + cameraY * tempVec[2]);
+	tempVertex[1] =
+		(0 * (cameraX * cameraX + cameraZ * cameraZ) - cameraY * (0 * cameraX + 0 * cameraZ - tempVec[0] * cameraX - tempVec[1] * cameraY - tempVec[2] * cameraZ)) * (1 - cos(angle)) + tempVec[1] * cos(angle) + sin(angle) * (0 * cameraX - 0 * cameraZ + cameraZ * tempVec[0] - cameraX * tempVec[2]);
+	tempVertex[2] =
+		(0 * (cameraX * cameraX + cameraY * cameraY) - cameraZ * (0 * cameraX + 0 * cameraY - tempVec[0] * cameraX - tempVec[1] * cameraY - tempVec[2] * cameraZ)) * (1 - cos(angle)) + tempVec[2] * cos(angle) + sin(angle) * ( -1.0 * 0 * cameraX + 0 * cameraY - cameraY * tempVec[0] + cameraX * tempVec[1]);
+	*/
+	
 }
 
 //Translates the model up by amount
@@ -268,43 +338,12 @@ void Cube::rotate(float amount)
 //Post: all the verticies of the cube are translated up.
 void Cube::translateUp(float amount)
 {
+	
 	for (int i = 0; i < 24; i++)
 	{
 		vertices[i][1] = vertices[i][1] + amount;
 	}
 	
-
-	/*
-	GLfloat GLamount = amount;
-	vmath::mat4 translationMat = vmath::translate(0.0f, amount, 0.0f);
-	vmath::mat4 tempMat;
-	vmath::vec4 tempVertex;
-
-
-	for (int i = 0; i < 24; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			tempMat[j] = vertices[i][j];
-		}
-		
-		tempVertex = (tempMat*translationMat)[0];
-
-		for (int j = 0; j < 4; j++)
-		{
-			//std::cout << tempVertex[1][j] << "\n";
-			vertices[i][j] = tempVertex[j];
-		}
-	}
-	*/
-
-	//the needed transform matrix for reference
-	/*
-	float transform[4][4] = 
-	{ {1.0, 0.0, 0.0, 0.0},
-	  {0.0, 1.0, 0.0, amount},
-	  {0.0, 0.0, 1.0, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} };*/
 }
 
 //Translates the model down by amount
@@ -316,14 +355,6 @@ void Cube::translateDown(float amount)
 	{
 		vertices[i][1] -= amount;
 	}
-
-	//the desired matirx for the translation
-	/*
-	float transform[4][4] = 
-	{ {1.0, 0.0, 0.0, 0.0},
-	  {0.0, 1.0, 0.0, -amount},
-	  {0.0, 0.0, 1.0, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} }; */
 }
 
 //Translates the model left by amount
@@ -335,14 +366,6 @@ void Cube::translateLeft(float amount)
 	{
 		vertices[i][0] -= amount;
 	}
-	
-	/*
-	//the desired matirx for the translation
-	float transform[4][4] = 
-	{ {1.0, 0.0, 0.0, amount},
-	  {0.0, 1.0, 0.0, 0.0},
-	  {0.0, 0.0, 1.0, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} }; */
 }
 
 //Translates the model right by amount
@@ -354,15 +377,6 @@ void Cube::translateRight(float amount)
 	{
 		vertices[i][0] += amount;
 	}
-
-
-	//the desired matirx for the translation
-	/*
-	float transform[4][4] = 
-	{ {1.0, 0.0, 0.0, amount},
-	  {0.0, 1.0, 0.0, 0.0},
-	  {0.0, 0.0, 1.0, 0.0},
-	  {0.0, 0.0, 0.0, 1.0} };*/
 }
 
 //changes the current texture to a new given texture
