@@ -27,6 +27,7 @@ private:
 	std::vector<GLuint> textureID;	//the id for the cube's texture
 	GLfloat** vertices;	//A two dimensional array of the verticies.
 						//defined as a pointer to a pointer, hence the **
+	GLfloat** texies;
 	
 
 public:
@@ -44,6 +45,7 @@ public:
 	void setTexture(std::vector<GLuint>);	//changes the current texture to a new given texture
 
 	GLfloat** getVertices();
-	GLfloat** texies;	
+	GLfloat** getTexies();
+		
 
 };

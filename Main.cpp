@@ -49,6 +49,7 @@ const int WINDOW_Y = 512;
 Camera hunterCam = Camera();
 
 GLfloat vertices[72][4];
+GLfloat texies [72][2];
 Cube* models[3];
 
 void updateVertices();
@@ -126,7 +127,7 @@ void init()
 
 	//binds a buffer for holding the texture co-ordinates
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ TEXTURE_BUFFER ]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof (models[0]->texies), models[0]->texies, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof (texies), texies, GL_STATIC_DRAW);
 
 	//sets the atribute for the texture overlay and enables that atribute.
 	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE , 0, BUFFER_OFFSET(0));
@@ -146,6 +147,19 @@ void updateVertices()
 			for (int h = 0; h < 4; h++)
 			{
 				vertices[j + (i * 24)][h] = tempArray[j][h];
+			}
+		}
+	}
+
+	//using the same temp array, so the value does not need to be declared again
+	for (int i = 0; i < 3; i++)
+	{
+		tempArray = models[i] -> getTexies();
+		for (int j = 0; j < 24; j++)
+		{
+			for (int h = 0; h < 2; h++)
+			{
+				texies[j + (i * 24)][h] = tempArray[j][h];
 			}
 		}
 	}

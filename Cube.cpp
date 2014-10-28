@@ -442,3 +442,9 @@ GLfloat** Cube::getVertices()
 {
 	return vertices;
 }
+
+//Returns this object's texture vector
+GLfloat** Cube::getTexies()
+{
+	return texies;
+}
