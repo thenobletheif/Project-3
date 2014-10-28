@@ -32,7 +32,7 @@ using std::cerr;
 // Vertex array objects
 enum { VERTS, NUM_VAOS };
 // Buffers
-enum { VERTS_BUFFER, NUM_BUFFERS };
+enum { VERTS_BUFFER, TEXTURE_BUFFER, NUM_BUFFERS };
 // textures
 enum { PLACEHOLDER_TEXTURE, NUM_TEXTURES };
 
@@ -71,6 +71,25 @@ void init()
 	models[2] = new Cube(0.3f, 0.35f, 0.15f, 0.0f);
 	updateVertices();
 
+	ShaderInfo shaders[] = {
+		{GL_VERTEX_SHADER, "vertices.vert"},
+		{GL_FRAGMENT_SHADER, "fragments.frag"},
+		{GL_NONE, NULL}
+	};
+	GLuint vertexOffset = 0;
+	GLuint program = LoadShaders( shaders );
+	glUseProgram( program );
+
+	glGenVertexArrays(NUM_VAOS, VAOs);
+	glBindVertexArray(VAOs[VERTS]);
+
+	glGenBuffers(NUM_BUFFERS, Buffers);
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[VERTS_BUFFER]);
+	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
+
+	glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray( 0 );
+
 	//generates NUM_TEXTURES number of ID's to be stored
 	//in the array called "Textures"
 	glGenTextures(NUM_TEXTURES, Textures);
@@ -78,36 +97,40 @@ void init()
 	//textures sub PLACEHOLDER_TEXTURE
 	glBindTexture(GL_TEXTURE_RECTANGLE, Textures[PLACEHOLDER_TEXTURE]);
 
+	std::vector<unsigned char> picData;
 	
-	
-
-	glGenVertexArrays(NUM_VAOS, VAOs);
-	glBindVertexArray(VAOs[VERTS]);
-
-	glGenBuffers(NUM_BUFFERS, Buffers);
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[VERTS_BUFFER]);
-
-	/*
 	//Load raw pixel data into texture vectors
-	unsigned width;
-	unsigned height;
+	//width and height GAIN the values that lodepng is using.
+	unsigned width = 0;
+	unsigned height = 0;
 	std::vector<unsigned char> exampleTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
 
-	lodepng::decode(exampleTexture, width, height, "exampleTexture.png");
-	*/
+	lodepng::decode(exampleTexture, width, height, "auron.png");
+	
+	glBindTexture(GL_TEXTURE_2D, Textures[PLACEHOLDER_TEXTURE]);
 
-	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
+	glEnable(GL_TEXTURE_2D);
 
-	ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "vertices.vert"},
-        {GL_FRAGMENT_SHADER, "fragments.frag"},
-        {GL_NONE, NULL}
-    };
-	GLuint vertexOffset = 0;
-	GLuint program = LoadShaders( shaders );
-	glUseProgram( program );
-	glVertexAttribPointer( vertexOffset, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-	glEnableVertexAttribArray( vertexOffset );
+	glTexStorage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height);
+		// Specify the data for the texture
+	glTexSubImage2D(GL_TEXTURE_2D, // target
+		0, // First mipmap level
+		0, 0, // x and y offset
+		width, height, // width and height
+		GL_RGBA, GL_UNSIGNED_BYTE, // format and type
+		&picData[0] ); // data
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &picData[0] );
+
+	//binds a buffer for holding the texture co-ordinates
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ TEXTURE_BUFFER ]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof (models[0]->texies), models[0]->texies, GL_STATIC_DRAW);
+
+	//sets the atribute for the texture overlay and enables that atribute.
+	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE , 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray( 1 );
 }
 
 //a function that handles updating the verticies 

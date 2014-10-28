@@ -27,26 +27,23 @@ private:
 	std::vector<GLuint> textureID;	//the id for the cube's texture
 	GLfloat** vertices;	//A two dimensional array of the verticies.
 						//defined as a pointer to a pointer, hence the **
+	
 
 public:
 	Cube();
-
 	Cube(float, GLfloat, GLfloat, GLfloat);
 
 	void scale(float);			//Scales the model by a given factor
-
 	void rotate(float);			//Rotates the model by a given amount
 
 	void translateUp(float);	//Translates the model up by a given amount
-
 	void translateDown(float);	//Translates the model down by a given amount
-
 	void translateLeft(float);	//Translates the model left by a given amount
-
 	void translateRight(float);	//Translates the model right by a given amount
 
 	void setTexture(std::vector<GLuint>);	//changes the current texture to a new given texture
 
 	GLfloat** getVertices();
+	GLfloat** texies;	
 
 };

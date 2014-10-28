@@ -26,110 +26,162 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	//Assume that the given point is the top right point with the greatest z value, assign the vertices their values
 	for (int i = 0; i < 24; i++)		//For each vertex, set each scale to 1 and set the appropriate z values
 		vertices[i][3] = 1.0f;
+
+	texies = new GLfloat*[24];	//create the array of texture co-ordinates
+	for (int i = 0; i < 24; i++)
+		texies[i] = new GLfloat[2];
 	
 	//Assign all sides their corrosponding x and y values
 
-	//Side 1
+	//Side 1 the backmost side
 	vertices[0][0] = x;	//sets the x, y, z value for the 
 	vertices[0][1] = y;	//first vertex of the first side.
-	vertices[0][2] = z;
+	vertices[0][2] = z; //the top left back corner
+	texies[0][0] = 0.0;
+	texies[0][1] = 0.0;
 
 	vertices[1][0] = x;
 	vertices[1][1] = y - sideLength;
 	vertices[1][2] = z;
+	texies[1][0] = 0.0;
+	texies[1][1] = 1.0;
 
 	vertices[2][0] = x + sideLength;
 	vertices[2][1] = y;
 	vertices[2][2] = z;
+	texies[2][0] = 1.0;
+	texies[2][1] = 0.0;
 
 	vertices[3][0] = x + sideLength;
 	vertices[3][1] = y - sideLength;
 	vertices[3][2] = z;
+	texies[3][0] = 1.0;
+	texies[3][1] = 1.0;
 
-	//Side 2
-	vertices[4][0] = x;
+	//Side 2 the top side
+	vertices[4][0] = x;	//top left back corner
 	vertices[4][1] = y;
 	vertices[4][2] = z;
+	texies[4][0] = 0.0;
+	texies[4][1] = 0.0;
 
 	vertices[5][0] = x;
 	vertices[5][1] = y;
 	vertices[5][2] = z - sideLength;
+	texies[5][0] = 0.0;
+	texies[5][1] = 1.0;
 
 	vertices[6][0] = x + sideLength;
 	vertices[6][1] = y;
 	vertices[6][2] = z;
+	texies[6][0] = 0.0;
+	texies[6][1] = 1.0;
 
 	vertices[7][0] = x + sideLength;
 	vertices[7][1] = y;
 	vertices[7][2] = z - sideLength;
-
-	//Side 3
-	vertices[8][0] = x;
+	texies[7][0] = 1.0;
+	texies[7][1] = 1.0;
+	
+	//Side 3 the front side of the cube
+	vertices[8][0] = x;	//the top left near corner
 	vertices[8][1] = y;
 	vertices[8][2] = z - sideLength;
+	texies[8][0] = 0.0;
+	texies[8][1] = 0.0;
 
 	vertices[9][0] = x;
 	vertices[9][1] = y - sideLength;
 	vertices[9][2] = z - sideLength;
+	texies[9][0] = 0.0;
+	texies[9][1] = 1.0;
 
 	vertices[10][0] = x + sideLength;
 	vertices[10][1] = y;
 	vertices[10][2] = z - sideLength;
+	texies[10][0] = 1.0;
+	texies[10][1] = 0.0;
 
 	vertices[11][0] = x + sideLength;
 	vertices[11][1] = y - sideLength;
 	vertices[11][2] = z - sideLength;
+	texies[11][0] = 1.0;
+	texies[11][1] = 1.0;
 
-	//Side 4
-	vertices[12][0] = x;
+	//Side 4 the bottom side
+	vertices[12][0] = x;	//the bottom left back corner
 	vertices[12][1] = y - sideLength;
 	vertices[12][2] = z;
+	texies[12][0] = 0.0;
+	texies[12][1] = 1.0;
 
 	vertices[13][0] = x;
 	vertices[13][1] = y - sideLength;
 	vertices[13][2] = z - sideLength;
+	texies[13][0] = 0.0;
+	texies[13][1] = 0.0;
 
 	vertices[14][0] = x + sideLength;
 	vertices[14][1] = y - sideLength;
 	vertices[14][2] = z;
+	texies[14][0] = 1.0;
+	texies[14][1] = 1.0;
 
 	vertices[15][0] = x + sideLength;
 	vertices[15][1] = y - sideLength;
 	vertices[15][2] = z - sideLength;
+	texies[15][0] = 1.0;
+	texies[15][1] = 0.0;
 
-	//Side 5
-	vertices[16][0] = x;
+	//Side 5 left side of the cube
+	vertices[16][0] = x;	//top left back corner
 	vertices[16][1] = y;
 	vertices[16][2] = z;
+	texies[16][0] = 0.0;
+	texies[16][1] = 0.0;
 
 	vertices[17][0] = x;
 	vertices[17][1] = y;
 	vertices[17][2] = z - sideLength;
+	texies[17][0] = 1.0;
+	texies[17][1] = 0.0;
 
 	vertices[18][0] = x;
 	vertices[18][1] = y - sideLength;
 	vertices[18][2] = z;
+	texies[18][0] = 0.1;
+	texies[18][1] = 0.1;
 
 	vertices[19][0] = x;
 	vertices[19][1] = y - sideLength;
 	vertices[19][2] = z - sideLength;
+	texies[19][0] = 1.0;
+	texies[19][1] = 1.0;
 
-	//Side 6
+	//Side 6 the right side
 	vertices[20][0] = x + sideLength;
-	vertices[20][1] = y;
+	vertices[20][1] = y;	//the top back right corner
 	vertices[20][2] = z;
+	texies[20][0] = 1.0;
+	texies[20][1] = 0.0;
 
 	vertices[21][0] = x + sideLength;
 	vertices[21][1] = y;
 	vertices[21][2] = z - sideLength;
+	texies[21][0] = 0.0;
+	texies[21][1] = 0.0;
 
 	vertices[22][0] = x + sideLength;
 	vertices[22][1] = y - sideLength;
 	vertices[22][2] = z;
+	texies[22][0] = 1.0;
+	texies[22][1] = 1.0;
 
 	vertices[23][0] = x + sideLength;
 	vertices[23][1] = y - sideLength;
 	vertices[23][2] = z - sideLength;
+	texies[23][0] = 0.0;
+	texies[23][1] = 1.0;
 
 }
 
