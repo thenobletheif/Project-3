@@ -196,13 +196,13 @@ void moveHandler(int direction)
 	switch(direction)
 	{
 	case 1:
-		models[currentCube] -> translateLeft(moveDistance);
+		models[currentCube] -> translateX(-0.1);
 		break;
 	case 2:
 		models[currentCube] -> translateY(-0.1);
 		break;
 	case 3:
-		models[currentCube] -> translateRight(moveDistance);
+		models[currentCube] -> translateX(0.1);
 		break;
 	case 4:
 		models[currentCube] -> translateY(0.1);
