@@ -336,12 +336,15 @@ void Cube::scale(float factor)
 			vertices[i][j] = tempVec[j];
 	}
 	
+
 	for (int i = 0; i < 24; i++)
 	{
 		vertices[i][0] = vertices[i][0] + previousX;
 		vertices[i][1] = vertices[i][1] + previousY;
 		vertices[i][2] = vertices[i][2] + previousZ;
 	}
+
+	length = length * factor;
 }
 
 //Rotates the model by a given amount
@@ -352,9 +355,18 @@ void Cube::rotate(float angle)
 	vmath::mat4 translationMat = vmath::rotate(GLangle, 0.0f, 0.0f, 1.0f);
 	vmath::vec4 tempVec;
 
-	//float cameraX = 0.0;
-	//float cameraY = 0.0;
-	//float cameraZ = -1.0;
+
+	float previousX = vertices[0][0] + length/2.0;
+	float previousY = vertices[0][1] - length/2.0;
+	float previousZ = vertices[0][2] - length/2.0;
+	
+	for (int i = 0; i < 24; i++)
+	{
+		vertices[i][0] = vertices[i][0] - previousX;
+		vertices[i][1] = vertices[i][1] - previousY;
+		vertices[i][2] = vertices[i][2] - previousZ;
+	}
+
 	
 	for (int i = 0; i < 24; i++)
 	{
@@ -373,15 +385,14 @@ void Cube::rotate(float angle)
 			vertices[i][j] = tempVec[j];
 
 	}
-	/*
-	vmath::vec4 tempVertex;
-	tempVertex[0] =
-		(0 * (cameraY * cameraY + cameraZ * cameraZ) - cameraX * (0 * cameraY + 0 * cameraZ - tempVec[0] * cameraX - tempVec[1] * cameraY - tempVec[2] * cameraZ)) * (1 - cos(angle)) + tempVec[0] * cos(angle) + sin(angle) * ( -1.0 * 0 * cameraY + 0 * cameraZ - cameraZ * tempVec[1] + cameraY * tempVec[2]);
-	tempVertex[1] =
-		(0 * (cameraX * cameraX + cameraZ * cameraZ) - cameraY * (0 * cameraX + 0 * cameraZ - tempVec[0] * cameraX - tempVec[1] * cameraY - tempVec[2] * cameraZ)) * (1 - cos(angle)) + tempVec[1] * cos(angle) + sin(angle) * (0 * cameraX - 0 * cameraZ + cameraZ * tempVec[0] - cameraX * tempVec[2]);
-	tempVertex[2] =
-		(0 * (cameraX * cameraX + cameraY * cameraY) - cameraZ * (0 * cameraX + 0 * cameraY - tempVec[0] * cameraX - tempVec[1] * cameraY - tempVec[2] * cameraZ)) * (1 - cos(angle)) + tempVec[2] * cos(angle) + sin(angle) * ( -1.0 * 0 * cameraX + 0 * cameraY - cameraY * tempVec[0] + cameraX * tempVec[1]);
-	*/
+
+
+	for (int i = 0; i < 24; i++)
+	{
+		vertices[i][0] = vertices[i][0] + previousX;
+		vertices[i][1] = vertices[i][1] + previousY;
+		vertices[i][2] = vertices[i][2] + previousZ;
+	}
 	
 }
 
