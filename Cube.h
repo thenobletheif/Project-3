@@ -35,10 +35,9 @@ public:
 	Cube(float, GLfloat, GLfloat, GLfloat);
 
 	void scale(float);			//Scales the model by a given factor
-	void rotate(float);			//Rotates the model by a given amount
+	void rotate(float, int);			//Rotates the model by a given amount
 
-	void translateUp(float);	//Translates the model up by a given amount
-	void translateDown(float);	//Translates the model down by a given amount
+	void translateY(float);	//Translates the model's y value by a given amount
 	void translateLeft(float);	//Translates the model left by a given amount
 	void translateRight(float);	//Translates the model right by a given amount
 

@@ -174,7 +174,7 @@ void scaleHandler(float scale)
 }
 
 //a handler for rotating the cube
-void rotationHandler(bool clockwise)
+void rotationHandler(bool clockwise, int state)
 {
 	//if the cube is rotating clockwise rotate 0.5 units
 	//otherwise rotate -0.5 units.
@@ -184,7 +184,7 @@ void rotationHandler(bool clockwise)
 	else
 		amount = -0.5;
 
-	models[currentCube] -> rotate(amount);
+	models[currentCube] -> rotate(amount, state);
 	updateVertices();
 }
 
@@ -199,13 +199,13 @@ void moveHandler(int direction)
 		models[currentCube] -> translateLeft(moveDistance);
 		break;
 	case 2:
-		models[currentCube] -> translateDown(moveDistance);
+		models[currentCube] -> translateY(-0.1);
 		break;
 	case 3:
 		models[currentCube] -> translateRight(moveDistance);
 		break;
 	case 4:
-		models[currentCube] -> translateUp(moveDistance);
+		models[currentCube] -> translateY(0.1);
 		break;
 	default:
 		cout<< "ERROR: Somehow you are trying to move in the " <<endl;
@@ -279,13 +279,29 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 
 	//rotation section of code
-	case 'c':	//rotate the object clockwise. C for clockwise
-	case 'C':
-		rotationHandler(true);
+	case 'f':	//rotate the object clockwise around the x-axis.
+	case 'F':
+		rotationHandler(true, 1);
 		break;
-	case 'v':	//rotate the object counterclockwise. 
-	case 'V':
-		rotationHandler(false);
+	case 'g':	//rotate the object counterclockwise around the x-axis .
+	case 'G':
+		rotationHandler(false, 1);
+		break;
+	case 'h':	//rotate the object clockwise around the y-axis.
+	case 'H':
+		rotationHandler(true, 2);
+		break;
+	case 'j':	//rotate the object counterclockwise around the y-axis. 
+	case 'J':
+		rotationHandler(false, 2);
+		break;
+	case 'k':	//rotate the object clockwise around the z-axis.
+	case 'K':
+		rotationHandler(true, 3);
+		break;
+	case 'l':	//rotate the object counterclockwise around the z-axis. 
+	case 'L':
+		rotationHandler(false, 3);
 		break;
 
 	//move object section of code
