@@ -98,7 +98,7 @@ void init()
 	//textures sub PLACEHOLDER_TEXTURE
 	glBindTexture(GL_TEXTURE_RECTANGLE, Textures[PLACEHOLDER_TEXTURE]);
 
-	std::vector<unsigned char> picData;
+
 	
 	//Load raw pixel data into texture vectors
 	//width and height GAIN the values that lodepng is using.
@@ -112,18 +112,19 @@ void init()
 
 	glEnable(GL_TEXTURE_2D);
 
-	glTexStorage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height);
+	
 		// Specify the data for the texture
-	glTexSubImage2D(GL_TEXTURE_2D, // target
+	glTexImage2D(GL_TEXTURE_2D, // target
 		0, // First mipmap level
-		0, 0, // x and y offset
+		GL_RGBA,	//Internal format
 		width, height, // width and height
+		0,	//Border
 		GL_RGBA, GL_UNSIGNED_BYTE, // format and type
-		&picData[0] ); // data
+		&(exampleTexture[0]) ); // data
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &picData[0] );
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(picData[0] );
 
 	//binds a buffer for holding the texture co-ordinates
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ TEXTURE_BUFFER ]);
