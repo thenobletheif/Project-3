@@ -48,9 +48,9 @@ const int WINDOW_Y = 512;
 
 Camera hunterCam = Camera();
 
-GLfloat vertices[72][4];
+GLfloat vertices[96][4];
 GLfloat texies [72][2];
-Cube* models[3];
+Cube* models[4];
 
 void updateVertices();
 
@@ -70,6 +70,8 @@ void init()
 	models[0] = new Cube(0.3f, -0.65f, 0.15f, 0.0f);
 	models[1] = new Cube(0.3f, -0.15f, 0.15f, 0.0f);
 	models[2] = new Cube(0.3f, 0.35f, 0.15f, 0.0f);
+	models[3] = new Cube(0.3f, -0.65f, 0.15f, 0.0f);
+
 	updateVertices();
 
 	ShaderInfo shaders[] = {
@@ -135,12 +137,30 @@ void init()
 	glEnableVertexAttribArray( 1 );
 }
 
+//updateHighlight()
+// Updates and loads the highlight
+void updateHighlight()
+{
+	GLfloat** tempArray = models[currentCube] -> getVertices();
+	GLfloat** highlightArray = models[3] -> getVertices();
+
+	for (int i = 0; i < 24; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			highlightArray[i][j] = tempArray[i][j];
+		}
+	}
+}
 //a function that handles updating the verticies 
 //after the vertices have been updated in the cube.
 void updateVertices()
 {
 	GLfloat** tempArray;
-	for (int i = 0; i < 3; i++)
+
+	updateHighlight();
+
+	for (int i = 0; i < 4; i++)
 	{
 		tempArray = models[i] -> getVertices();
 		for (int j = 0; j < 24; j++)
@@ -188,11 +208,18 @@ void rotationHandler(bool clockwise, int state)
 	updateVertices();
 }
 
-//a handler for moving the cubes
+//=========================================================
+//movehandler()
+//
+//Translates the current cube a certain way based on the passed variable
+//
+//Pre: direction is initialized
+//Post: A cube may have been translated by a certain amount
 void moveHandler(int direction)
 {
 	float moveDistance = 0.1;
 
+	//Depending on the direction input, translate the current cube a certain way
 	switch(direction)
 	{
 	case 1:
@@ -226,9 +253,17 @@ void display()
 	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
 	glLineWidth(2);
 
+	//Draw the sides of each cube
 	for (int i = 0; i < 18; i++)
 	{
 		glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
+	}
+
+	glLineWidth(100);
+	//Draw the highlight cube
+	for (int i = 18; i < 24; i++)
+	{
+		glDrawArrays(GL_LINE_STRIP, i * 4, 4);
 	}
 
 	
@@ -266,6 +301,7 @@ void keyboard(unsigned char key, int x, int y)
 	case 'M':
 		currentCube += 1;
 		currentCube %= numCubes;
+		updateVertices();
 		break;
 
 	//scaling section of code
