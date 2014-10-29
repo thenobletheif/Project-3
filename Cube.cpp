@@ -39,17 +39,13 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	
 	//Assign all sides their corrosponding x and y values
 
-<<<<<<< HEAD
-		//Set the values of the centerpoint of this cube
+	//Set the values of the centerpoint of this cube
 	centerPoint[0] = x + length/2.0;
 	centerPoint[1] = y - length/2.0;
 	centerPoint[2] = z - length/2.0;
 	centerPoint[3] = 1.0;
 
 	//Side 1 the backmost side
-=======
-	//Side 1 the front side
->>>>>>> origin/master
 	vertices[0][0] = x;	//sets the x, y, z value for the 
 	vertices[0][1] = y;	//first vertex of the first side.
 	vertices[0][2] = z; //the top left back corner

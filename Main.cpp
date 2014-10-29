@@ -48,27 +48,20 @@ const int WINDOW_Y = 512;
 
 Camera hunterCam = Camera();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 GLfloat vertices[96][4];		//Array of all vertices
 GLfloat texies [72][2];
 Cube* models[4];				//Array of every cube object
-=======
 GLfloat vertices[96][4];
 Cube* models[4];
->>>>>>> origin/master
-
-=======
 GLfloat vertices[72][4];
 GLfloat texies [72][2];
 Cube* models[3];
->>>>>>> parent of 306a9f9... Highlighting
-=======
 GLfloat vertices[72][4];
 GLfloat texies [72][2];
 Cube* models[3];
->>>>>>> parent of 306a9f9... Highlighting
+GLfloat vertices[72][4];
+GLfloat texies [72][2];
+Cube* models[3];
 
 void updateVertices();
 bool detectCollideOnCurrent();
@@ -154,8 +147,7 @@ void init()
 	glEnableVertexAttribArray( 1 );
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 //=========================================================
 //updateHighlight()
 //
@@ -185,12 +177,8 @@ void updateHighlight()
 //
 //Pre:
 //Post: vertices has changed
-=======
-=======
->>>>>>> parent of 306a9f9... Highlighting
 //a function that handles updating the verticies 
 //after the vertices have been updated in the cube.
->>>>>>> parent of 306a9f9... Highlighting
 void updateVertices()
 {
 	GLfloat** tempArray;
@@ -508,15 +496,10 @@ void rotationHandler(bool clockwise, int state)
 //a handler for moving the cubes
 void moveHandler(int direction)
 {
-<<<<<<< HEAD
+
 	//Depending on the direction input, translate the current cube a certain way
-=======
 	float moveDistance = 0.1;
 
-<<<<<<< HEAD
->>>>>>> parent of 306a9f9... Highlighting
-=======
->>>>>>> parent of 306a9f9... Highlighting
 	switch(direction)
 	{
 	case 1:
@@ -563,21 +546,12 @@ void display()
 
 	glLineWidth(2);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	//each of the cubes uses its own draw self functions
 	for (int i = 0; i < 3; i++)
-=======
-=======
->>>>>>> parent of 306a9f9... Highlighting
-	for (int i = 0; i < 18; i++)
->>>>>>> parent of 306a9f9... Highlighting
 	{
 		models[i]->drawSelf();
 	}	
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	/*glLineWidth(100);
 	//Draw the highlight cube
 	for (int i = 18; i < 24; i++)
@@ -585,11 +559,6 @@ void display()
 		glDrawArrays(GL_LINE_STRIP, i * 4, 4);
 	}*/
 
-=======
-=======
->>>>>>> parent of 306a9f9... Highlighting
-	
->>>>>>> parent of 306a9f9... Highlighting
 
 	// Clear the screen
 	glFlush();
