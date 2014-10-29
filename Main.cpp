@@ -34,7 +34,7 @@ enum { VERTS, NUM_VAOS };
 // Buffers
 enum { VERTS_BUFFER, TEXTURE_BUFFER, NUM_BUFFERS };
 // textures
-enum { AURON_TEXTURE, WOOD_TEXTURE, COMPANION_CUBE_TEXTURE,TEXTURE4,TEXTURE5,TEXTURE6,TEXTURE7,TEXTURE8,TEXTURE9,TEXTURE10,NUM_TEXTURES };
+enum { PLACEHOLDER_TEXTURE, NUM_TEXTURES };
 
 // Data is stored in these arrays
 GLuint VAOs[ NUM_VAOS ];
@@ -51,21 +51,7 @@ Camera hunterCam = Camera();
 GLfloat vertices[96][4];		//Array of all vertices
 GLfloat texies [72][2];
 Cube* models[4];				//Array of every cube object
-<<<<<<< HEAD
 
-=======
-GLfloat vertices[96][4];
-Cube* models[4];
-GLfloat vertices[72][4];
-GLfloat texies [72][2];
-Cube* models[3];
-GLfloat vertices[72][4];
-GLfloat texies [72][2];
-Cube* models[3];
-GLfloat vertices[72][4];
-GLfloat texies [72][2];
-Cube* models[3];
->>>>>>> origin/master
 
 void updateVertices();
 bool detectCollideOnCurrent();
@@ -86,6 +72,8 @@ void init()
 	models[0] = new Cube(0.3f, -0.65f, 0.15f, 0.0f);
 	models[1] = new Cube(0.3f, -0.15f, 0.15f, 0.0f);
 	models[2] = new Cube(0.3f, 0.35f, 0.15f, 0.0f);
+	models[3] = new Cube(0.3f, -0.65f, 0.15f, 0.0f);
+
 	updateVertices();
 
 	ShaderInfo shaders[] = {
@@ -97,60 +85,59 @@ void init()
 	GLuint program = LoadShaders( shaders );
 	glUseProgram( program );
 
-	//alows you to use 2D textures
-	glEnable(GL_TEXTURE_2D);
+	glGenVertexArrays(NUM_VAOS, VAOs);
+	glBindVertexArray(VAOs[VERTS]);
+
+	glGenBuffers(NUM_BUFFERS, Buffers);
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[VERTS_BUFFER]);
+	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
+
+	glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray( 0 );
 	
 	//generates NUM_TEXTURES number of ID's to be stored
 	//in the array called "Textures"
 	glGenTextures(NUM_TEXTURES, Textures);
-	models[0]->setTextureID(Textures[0]);
-	models[1]->setTextureID(Textures[0]);
-	models[2]->setTextureID(Textures[0]);
+	//says use the GL_TEXTURE_RECTANGLE format for the texture ID stored in
+	//textures sub PLACEHOLDER_TEXTURE
+	glBindTexture(GL_TEXTURE_RECTANGLE, Textures[PLACEHOLDER_TEXTURE]);
 
 	//Load raw pixel data into texture vectors
 	//width and height GAIN the values that lodepng is using.
 	unsigned width = 0;
 	unsigned height = 0;
-	std::vector<unsigned char> auronTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
+	std::vector<unsigned char> exampleTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
 
-	lodepng::decode(auronTexture, width, height, "auron.png");
-	glBindTexture(GL_TEXTURE_2D, Textures[AURON_TEXTURE]);
+	lodepng::decode(exampleTexture, width, height, "auron.png");
 	
-	// Specify the data for the texture
+	glBindTexture(GL_TEXTURE_2D, Textures[PLACEHOLDER_TEXTURE]);
+
+	glEnable(GL_TEXTURE_2D);
+
+	
+		// Specify the data for the texture
 	glTexImage2D(GL_TEXTURE_2D, // target
 		0, // First mipmap level
 		GL_RGBA,	//Internal format
 		width, height, // width and height
 		0,	//Border
 		GL_RGBA, GL_UNSIGNED_BYTE, // format and type
-		&(auronTexture[0]) ); // data
+		&(exampleTexture[0]) ); // data
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(picData[0] );
 
-	std::vector<unsigned char> woodTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
+	//binds a buffer for holding the texture co-ordinates
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ TEXTURE_BUFFER ]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof (texies), texies, GL_STATIC_DRAW);
 
-	lodepng::decode(woodTexture, width, height, "wood.png");
-	glBindTexture(GL_TEXTURE_2D, Textures[WOOD_TEXTURE]);
 	
-	// Specify the data for the texture
-	glTexImage2D(GL_TEXTURE_2D, // target
-		0, // First mipmap level
-		GL_RGBA,	//Internal format
-		width, height, // width and height
-		0,	//Border
-		GL_RGBA, GL_UNSIGNED_BYTE, // format and type
-		&(woodTexture[0]) ); // data
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 	
 	//sets the atribute for the texture overlay and enables that atribute.
 	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE , 0, BUFFER_OFFSET(0));
 	glEnableVertexAttribArray( 1 );
 }
-
 
 //=========================================================
 //updateHighlight()
@@ -181,12 +168,13 @@ void updateHighlight()
 //
 //Pre:
 //Post: vertices has changed
-//a function that handles updating the verticies 
-//after the vertices have been updated in the cube.
 void updateVertices()
 {
 	GLfloat** tempArray;
-	for (int i = 0; i < 3; i++)
+
+	updateHighlight();
+
+	for (int i = 0; i < 4; i++)
 	{
 		tempArray = models[i] -> getVertices();
 		for (int j = 0; j < 24; j++)
@@ -194,6 +182,19 @@ void updateVertices()
 			for (int h = 0; h < 4; h++)
 			{
 				vertices[j + (i * 24)][h] = tempArray[j][h];
+			}
+		}
+	}
+
+	//using the same temp array, so the value does not need to be declared again
+	for (int i = 0; i < 3; i++)
+	{
+		tempArray = models[i] -> getTexies();
+		for (int j = 0; j < 24; j++)
+		{
+			for (int h = 0; h < 2; h++)
+			{
+				texies[j + (i * 24)][h] = tempArray[j][h];
 			}
 		}
 	}
@@ -254,6 +255,7 @@ bool detectCollideOnCurrent()
 	GLfloat boundaries2[8][4];
 	GLfloat boundaries3[8][4];
 
+	//Get the required 8 different vertices
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -362,6 +364,7 @@ bool detectCollideOnCurrent()
 	//end rotation
 	//========================================================================
 
+	//determine whether or not the other cubes collide with the current cube
 	if (currentCube == 0)
 	{
 		for (int i = 0; i < 3; i++)
@@ -497,13 +500,16 @@ void rotationHandler(bool clockwise, int state)
 	updateVertices();
 }
 
-//a handler for moving the cubes
+//=========================================================
+//movehandler()
+//
+//Translates the current cube a certain way based on the passed variable
+//
+//Pre: direction is initialized
+//Post: A cube may have been translated by a certain amount
 void moveHandler(int direction)
 {
-
 	//Depending on the direction input, translate the current cube a certain way
-	float moveDistance = 0.1;
-
 	switch(direction)
 	{
 	case 1:
@@ -547,21 +553,24 @@ void moveHandler(int direction)
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+	glBindVertexArray(VAOs[VERTS]);
 
+	glBindBuffer( GL_ARRAY_BUFFER, Buffers[VERTS_BUFFER] );
+	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
 	glLineWidth(2);
 
-	//each of the cubes uses its own draw self functions
-	for (int i = 0; i < 3; i++)
+	//Draw the sides of each cube
+	for (int i = 0; i < 18; i++)
 	{
-		models[i]->drawSelf();
-	}	
+		glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
+	}
 
-	/*glLineWidth(100);
+	glLineWidth(100);
 	//Draw the highlight cube
 	for (int i = 18; i < 24; i++)
 	{
 		glDrawArrays(GL_LINE_STRIP, i * 4, 4);
-	}*/
+	}
 
 
 	// Clear the screen
@@ -597,6 +606,7 @@ void keyboard(unsigned char key, int x, int y)
 	case 'M':
 		currentCube += 1;
 		currentCube %= numCubes;
+		updateVertices();
 		break;
 
 	//scaling section of code
@@ -699,7 +709,7 @@ void SpecialInput(int key, int x, int y)
 int main(int argc, char* argv[])
 {
 	//enables depth test to draw things in the right order on the screen.
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 
 	glutInit(&argc, argv);
 	//the display mode is in red, green, blue, transparancy mode.
