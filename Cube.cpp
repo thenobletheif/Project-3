@@ -31,10 +31,15 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	texies = new GLfloat*[24];	//create the array of texture co-ordinates
 	for (int i = 0; i < 24; i++)
 		texies[i] = new GLfloat[2];
+
+	//Initialize angle's values to 0
+	for (int i = 0; i < 4; i++)
+		angles[i] = 0.0;
+
 	
 	//Assign all sides their corrosponding x and y values
 
-	//Side 1 the backmost side
+	//Side 1 the front side
 	vertices[0][0] = x;	//sets the x, y, z value for the 
 	vertices[0][1] = y;	//first vertex of the first side.
 	vertices[0][2] = z; //the top left back corner
@@ -84,7 +89,7 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	texies[7][0] = 1.0;
 	texies[7][1] = 1.0;
 	
-	//Side 3 the front side of the cube
+	//Side 3 the back of the cube
 	vertices[8][0] = x;	//the top left near corner
 	vertices[8][1] = y;
 	vertices[8][2] = z - length;
@@ -192,7 +197,13 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	centerPoint[3] = 1.0;
 }
 
+//=========================================================
+//matMultiply()
 //
+// Multiplies a the vertices of this cube by a given transformation matrix
+//
+//Pre: transformMat and translate are both initialized
+//Post: vertices's vertices are changed
 void Cube::matMultiply(vmath::mat4 transformMat, bool translate)
 {
 	vmath::vec4 tempVec;	//Will hold the resulting vector values of the matrix multiplication
@@ -222,7 +233,13 @@ void Cube::matMultiply(vmath::mat4 transformMat, bool translate)
 	}
 }
 
-//Scales the model by a given factor
+//=========================================================
+//scale()
+//
+//scales the current cube by a given factor
+//
+//Pre: factor is initialized
+//Post: A cube may have been scaled by a certain factor
 void Cube::scale(float factor)
 {
 	GLfloat GLfactor = factor;	//Convert the given float value to a GLfloat
@@ -249,8 +266,12 @@ void Cube::scale(float factor)
 	length = length * factor;
 }
 
+//=========================================================
+//rotate()
+//
 //rotates the model by a given angle across the x, y, or z axis
-//Pre: amount is defined.
+//
+//Pre: angle and state are defined.
 //Post: all the verticies in the cube are rotated around a certain axis.
 void Cube::rotate(float angle, int state)
 {	
@@ -260,11 +281,20 @@ void Cube::rotate(float angle, int state)
 
 	//Get the matrix which will be used for multiplication
 	if (state == 1)
+	{
 		rotateMat = vmath::rotate(GLangle, 1.0f, 0.0f, 0.0f);
+		angles[0] += GLangle;
+	}
 	else if (state == 2)
+	{
 		rotateMat = vmath::rotate(GLangle, 0.0f, 1.0f, 0.0f);
+		angles[1] += GLangle;
+	}
 	else
+	{
 		rotateMat = vmath::rotate(GLangle, 0.0f, 0.0f, 1.0f);
+		angles[2] += GLangle;
+	}
 	
 
 	//Get variables to store the venterpoint's values before they change
@@ -285,7 +315,11 @@ void Cube::rotate(float angle, int state)
 	this -> translateZ(origCenterZ);
 }
 
+//=========================================================
+//translateY()
+//
 //Translates the model across the y-axis by a given amount
+//
 //Pre: amount is defined.
 //Post: all the verticies in the cube are translatedalong the y-axis by amount.
 void Cube::translateY(float amount)
@@ -301,8 +335,11 @@ void Cube::translateY(float amount)
 	centerPoint[1] += amount;	//Update the center point's location
 }
 
-
+//=========================================================
+//translateZ()
+//
 //Translates the model across the z-axis by a given amount
+//
 //Pre: amount is defined.
 //Post: all the verticies in the cube are translatedalong the z-axis by amount.
 void Cube::translateZ(float amount)
@@ -317,7 +354,11 @@ void Cube::translateZ(float amount)
 	centerPoint[2] += amount;	//Update the center point's location
 }
 
+//=========================================================
+//translateX()
+//
 //Translates the model across the x-axis by a given amount
+//
 //Pre: amount is defined.
 //Post: all the verticies in the cube are translatedalong the x-axis by amount.
 void Cube::translateX(float amount)
@@ -339,12 +380,30 @@ void Cube::setTexture(std::vector<GLuint> newTexture)
 
 }
 
-//Returns this object's vertex vector
+//=========================================================
+//getVertices()
+//
+// Returns the vertices array
+//
+//Pre:
+//Post: a 2D pointer is returned
 GLfloat** Cube::getVertices()
 {
 	return vertices;
 }
 
+//=========================================================
+//getAngles()
+//
+// Returns a vec4 of the angles to which this cube has been rotated around the
+// x, y, and z axes
+//
+//Pre:
+//Post: angles is returned
+vec4 Cube::getAngles()
+{
+	return angles;
+}
 //Returns this object's texture vector
 GLfloat** Cube::getTexies()
 {
