@@ -188,7 +188,31 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	vertices[23][2] = z - length;
 	texies[23][0] = 0.0;
 	texies[23][1] = 1.0;
+	
+	glGenVertexArrays(1, &VAOs);
+	glBindVertexArray(VAOs);
 
+	glGenBuffers(2, Buffers);
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);
+	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
+
+	glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glEnableVertexAttribArray( 0 );
+
+	//binds a buffer for holding the texture co-ordinates
+	//glBindBuffer(GL_ARRAY_BUFFER, Buffers[ 1 ]);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof (texies), texies, GL_STATIC_DRAW);
+
+	
+
+}
+
+void Cube::setTextureID(GLuint newTexID)
+{
+	GLuint texture = newTexID;
+	//says use the GL_TEXTURE_RECTANGLE format for the texture ID stored in
+	//texture
+	glBindTexture(GL_TEXTURE_2D, texture);
 
 	//Set the values of the centerpoint of this cube
 	centerPoint[0] = x + length/2.0;
@@ -374,6 +398,7 @@ void Cube::translateX(float amount)
 	centerPoint[0] += amount;	//Update the center point's location
 }
 
+<<<<<<< HEAD
 //changes the current texture to a new given texture
 void Cube::setTexture(std::vector<GLuint> newTexture)
 {
@@ -387,6 +412,9 @@ void Cube::setTexture(std::vector<GLuint> newTexture)
 //
 //Pre:
 //Post: a 2D pointer is returned
+=======
+//Returns this object's vertex vector
+>>>>>>> origin/master
 GLfloat** Cube::getVertices()
 {
 	return vertices;
@@ -408,4 +436,17 @@ vec4 Cube::getAngles()
 GLfloat** Cube::getTexies()
 {
 	return texies;
+}
+
+void Cube::drawSelf()
+{
+	glBindVertexArray(VAOs);
+	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);
+	//draw the triangle strips for the cube.
+	for (int i = 0; i < 6; i++)
+	{
+		glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
+	}
+	//glBindBuffer(GL_ARRAY_BUFFER, Buffers[ 1 ]);
+	//glBindTexture(GL_TEXTURE_2D, texture);
 }

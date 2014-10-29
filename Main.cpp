@@ -34,7 +34,7 @@ enum { VERTS, NUM_VAOS };
 // Buffers
 enum { VERTS_BUFFER, TEXTURE_BUFFER, NUM_BUFFERS };
 // textures
-enum { PLACEHOLDER_TEXTURE, NUM_TEXTURES };
+enum { AURON_TEXTURE, WOOD_TEXTURE, COMPANION_CUBE_TEXTURE,TEXTURE4,TEXTURE5,TEXTURE6,TEXTURE7,TEXTURE8,TEXTURE9,TEXTURE10,NUM_TEXTURES };
 
 // Data is stored in these arrays
 GLuint VAOs[ NUM_VAOS ];
@@ -48,9 +48,15 @@ const int WINDOW_Y = 512;
 
 Camera hunterCam = Camera();
 
+<<<<<<< HEAD
 GLfloat vertices[96][4];		//Array of all vertices
 GLfloat texies [72][2];
 Cube* models[4];				//Array of every cube object
+=======
+GLfloat vertices[96][4];
+Cube* models[4];
+>>>>>>> origin/master
+
 
 void updateVertices();
 bool detectCollideOnCurrent();
@@ -84,55 +90,55 @@ void init()
 	GLuint program = LoadShaders( shaders );
 	glUseProgram( program );
 
-	glGenVertexArrays(NUM_VAOS, VAOs);
-	glBindVertexArray(VAOs[VERTS]);
-
-	glGenBuffers(NUM_BUFFERS, Buffers);
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[VERTS_BUFFER]);
-	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
-
-	glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-	glEnableVertexAttribArray( 0 );
-
+	//alows you to use 2D textures
+	glEnable(GL_TEXTURE_2D);
+	
 	//generates NUM_TEXTURES number of ID's to be stored
 	//in the array called "Textures"
 	glGenTextures(NUM_TEXTURES, Textures);
-	//says use the GL_TEXTURE_RECTANGLE format for the texture ID stored in
-	//textures sub PLACEHOLDER_TEXTURE
-	glBindTexture(GL_TEXTURE_RECTANGLE, Textures[PLACEHOLDER_TEXTURE]);
-
+	models[0]->setTextureID(Textures[0]);
+	models[1]->setTextureID(Textures[0]);
+	models[2]->setTextureID(Textures[0]);
 
 	//Load raw pixel data into texture vectors
 	//width and height GAIN the values that lodepng is using.
 	unsigned width = 0;
 	unsigned height = 0;
-	std::vector<unsigned char> exampleTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
+	std::vector<unsigned char> auronTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
 
-	lodepng::decode(exampleTexture, width, height, "auron.png");
+	lodepng::decode(auronTexture, width, height, "auron.png");
+	glBindTexture(GL_TEXTURE_2D, Textures[AURON_TEXTURE]);
 	
-	glBindTexture(GL_TEXTURE_2D, Textures[PLACEHOLDER_TEXTURE]);
-
-	glEnable(GL_TEXTURE_2D);
-
-	
-		// Specify the data for the texture
+	// Specify the data for the texture
 	glTexImage2D(GL_TEXTURE_2D, // target
 		0, // First mipmap level
 		GL_RGBA,	//Internal format
 		width, height, // width and height
 		0,	//Border
 		GL_RGBA, GL_UNSIGNED_BYTE, // format and type
-		&(exampleTexture[0]) ); // data
+		&(auronTexture[0]) ); // data
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(picData[0] );
 
+	std::vector<unsigned char> woodTexture; //Must be of type unsigned char, which means each element is of value 0 to 255
 
-	//binds a buffer for holding the texture co-ordinates
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[ TEXTURE_BUFFER ]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof (texies), texies, GL_STATIC_DRAW);
+	lodepng::decode(woodTexture, width, height, "wood.png");
+	glBindTexture(GL_TEXTURE_2D, Textures[WOOD_TEXTURE]);
+	
+	// Specify the data for the texture
+	glTexImage2D(GL_TEXTURE_2D, // target
+		0, // First mipmap level
+		GL_RGBA,	//Internal format
+		width, height, // width and height
+		0,	//Border
+		GL_RGBA, GL_UNSIGNED_BYTE, // format and type
+		&(woodTexture[0]) ); // data
 
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+	
 	//sets the atribute for the texture overlay and enables that atribute.
 	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE , 0, BUFFER_OFFSET(0));
 	glEnableVertexAttribArray( 1 );
@@ -181,19 +187,6 @@ void updateVertices()
 			for (int h = 0; h < 4; h++)
 			{
 				vertices[j + (i * 24)][h] = tempArray[j][h];
-			}
-		}
-	}
-
-	//using the same temp array, so the value does not need to be declared again
-	for (int i = 0; i < 3; i++)
-	{
-		tempArray = models[i] -> getTexies();
-		for (int j = 0; j < 24; j++)
-		{
-			for (int h = 0; h < 2; h++)
-			{
-				texies[j + (i * 24)][h] = tempArray[j][h];
 			}
 		}
 	}
@@ -550,26 +543,22 @@ void moveHandler(int direction)
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glBindVertexArray(VAOs[VERTS]);
 
-	glBindBuffer( GL_ARRAY_BUFFER, Buffers[VERTS_BUFFER] );
-	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
 	glLineWidth(2);
 
-	//Draw the sides of each cube
-	for (int i = 0; i < 18; i++)
+	//each of the cubes uses its own draw self functions
+	for (int i = 0; i < 3; i++)
 	{
-		glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
-	}
+		models[i]->drawSelf();
+	}	
 
-	glLineWidth(100);
+	/*glLineWidth(100);
 	//Draw the highlight cube
 	for (int i = 18; i < 24; i++)
 	{
 		glDrawArrays(GL_LINE_STRIP, i * 4, 4);
-	}
+	}*/
 
-	
 
 	// Clear the screen
 	glFlush();
@@ -707,7 +696,7 @@ void SpecialInput(int key, int x, int y)
 int main(int argc, char* argv[])
 {
 	//enables depth test to draw things in the right order on the screen.
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 
 	glutInit(&argc, argv);
 	//the display mode is in red, green, blue, transparancy mode.

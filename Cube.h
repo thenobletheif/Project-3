@@ -24,10 +24,10 @@
 class Cube{
 private:
 	float length;	//the length of the side of the cube
-	std::vector<GLuint> textureID;	//the id for the cube's texture
 	GLfloat** vertices;	//A two dimensional array of the verticies.
 						//defined as a pointer to a pointer, hence the **
 	GLfloat** texies;
+	GLuint texture;
 
 	vec4 centerPoint;	//Stores the centerpoint of the cube
 	vec4 angles;		//Stores the different angles this cube has been rotated around each axis
@@ -46,6 +46,7 @@ public:
 	void translateX(float);	//Translates the model's x value by a given amount
 	void translateZ(float);	//Translates the model's z value by a given amount
 
+<<<<<<< HEAD
 	vec4 getAngles();	//Returns the angles vector
 
 	void setTexture(std::vector<GLuint>);	//changes the current texture to a new given texture
@@ -54,4 +55,13 @@ public:
 	GLfloat** getTexies();		//Returns the 2D array of texies pointer
 		
 
+=======
+	void drawSelf();
+	void setTextureID(GLuint);
+	GLuint VAOs;
+	GLuint Buffers[2];
+	
+	GLfloat** getVertices();
+	GLfloat** getTexies();
+>>>>>>> origin/master
 };
