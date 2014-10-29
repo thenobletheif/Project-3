@@ -28,6 +28,11 @@ private:
 						//defined as a pointer to a pointer, hence the **
 	GLfloat** texies;
 	GLuint texture;
+
+	vec4 centerPoint;	//Stores the centerpoint of the cube
+
+
+	void matMultiply(vmath::mat4, bool);	//Performs a matrix multiplication on this cube's vertices
 	
 
 public:
@@ -38,8 +43,8 @@ public:
 	void rotate(float, int);			//Rotates the model by a given amount
 
 	void translateY(float);	//Translates the model's y value by a given amount
-	void translateLeft(float);	//Translates the model left by a given amount
-	void translateRight(float);	//Translates the model right by a given amount
+	void translateX(float);	//Translates the model's x value by a given amount
+	void translateZ(float);	//Translates the model's z value by a given amount
 
 	void drawSelf();
 	void setTextureID(GLuint);

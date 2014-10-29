@@ -208,30 +208,19 @@ void Cube::setTextureID(GLuint newTexID)
 	//says use the GL_TEXTURE_RECTANGLE format for the texture ID stored in
 	//texture
 	glBindTexture(GL_TEXTURE_2D, texture);
+
+	//Set the values of the centerpoint of this cube
+	centerPoint[0] = x + length/2.0;
+	centerPoint[1] = y - length/2.0;
+	centerPoint[2] = z - length/2.0;
+	centerPoint[3] = 1.0;
 }
 
-//Scales the model by a given factor
-void Cube::scale(float factor)
+//
+void Cube::matMultiply(vmath::mat4 transformMat, bool translate)
 {
-	
-	GLfloat GLfactor = factor;
+	vmath::vec4 tempVec;	//Will hold the resulting vector values of the matrix multiplication
 
-	vmath::mat4 translationMat = vmath::scale(GLfactor);
-	vmath::vec4 tempVec;
-
-	float previousX = vertices[0][0] + length/2.0;
-	float previousY = vertices[0][1] - length/2.0;
-	float previousZ = vertices[0][2] - length/2.0;
-	
-	for (int i = 0; i < 24; i++)
-	{
-		vertices[i][0] = vertices[i][0] - previousX;
-		vertices[i][1] = vertices[i][1] - previousY;
-		vertices[i][2] = vertices[i][2] - previousZ;
-	}
-
-	
-	//Scales each vertice of the array
 	for (int i = 0; i < 24; i++)
 	{
 		//Set each value of the temporary vector to 0, for use with this current vertex
@@ -243,138 +232,129 @@ void Cube::scale(float factor)
 		{
 			for (int k = 0; k < 4; k++)
 			{
-				tempVec[j] += vertices[i][k] * translationMat[j][k];
+				//The multiplication is different if it is a translation
+				if (translate)
+					tempVec[j] += vertices[i][k] * transformMat[k][j];
+				else
+					tempVec[j] += vertices[i][k] * transformMat[j][k];
 			}
 		}
 
-		//Copy the new values into the main array of vertices
+		//Copy the new values into the vertices array
 		for (int j = 0; j < 4; j++)
 			vertices[i][j] = tempVec[j];
 	}
-	
+}
 
-	for (int i = 0; i < 24; i++)
-	{
-		vertices[i][0] = vertices[i][0] + previousX;
-		vertices[i][1] = vertices[i][1] + previousY;
-		vertices[i][2] = vertices[i][2] + previousZ;
-	}
+//Scales the model by a given factor
+void Cube::scale(float factor)
+{
+	GLfloat GLfactor = factor;	//Convert the given float value to a GLfloat
+	vmath::mat4 scaleMat = vmath::scale(GLfactor);	//Declare and the matrix used for this type of multiplication
+	
+	//Get variables to store the venterpoint's values before they change
+	float origCenterX = centerPoint[0];
+	float origCenterY = centerPoint[1];
+	float origCenterZ = centerPoint[2];
+
+	//Translate the cube to the origin
+	this -> translateX(-1.0 * origCenterX);
+	this -> translateY(-1.0 * origCenterY);
+	this -> translateZ(-1.0 * origCenterZ);
+
+	matMultiply(scaleMat, false);	//Perform the matrix multiplication for the transformation
+
+	//Translate the cube to the original location
+	this -> translateX(origCenterX);
+	this -> translateY(origCenterY);
+	this -> translateZ(origCenterZ);
+
 
 	length = length * factor;
 }
 
-//Rotates the model by a given amount
+//rotates the model by a given angle across the x, y, or z axis
+//Pre: amount is defined.
+//Post: all the verticies in the cube are rotated around a certain axis.
 void Cube::rotate(float angle, int state)
 {	
 
-	GLfloat GLangle = angle;
-	vmath::mat4 translationMat;
+	GLfloat GLangle = angle;	//Convert the given float value to a GLfloat
+	vmath::mat4 rotateMat;	//Declare and the matrix used for this type of multiplication
 
+	//Get the matrix which will be used for multiplication
 	if (state == 1)
-		translationMat = vmath::rotate(GLangle, 1.0f, 0.0f, 0.0f);
+		rotateMat = vmath::rotate(GLangle, 1.0f, 0.0f, 0.0f);
 	else if (state == 2)
-		translationMat = vmath::rotate(GLangle, 0.0f, 1.0f, 0.0f);
+		rotateMat = vmath::rotate(GLangle, 0.0f, 1.0f, 0.0f);
 	else
-		translationMat = vmath::rotate(GLangle, 0.0f, 0.0f, 1.0f);
-
-	vmath::vec4 tempVec;
-
-
-	/*
-	float previousX = vertices[0][0] + length/2.0;
-	float previousY = vertices[0][1] - length/2.0;
-	float previousZ = vertices[0][2] - length/2.0;
+		rotateMat = vmath::rotate(GLangle, 0.0f, 0.0f, 1.0f);
 	
-	for (int i = 0; i < 24; i++)
-	{
-		vertices[i][0] = vertices[i][0] - previousX;
-		vertices[i][1] = vertices[i][1] - previousY;
-		vertices[i][2] = vertices[i][2] - previousZ;
-	}
-	*/
 
-	
-	for (int i = 0; i < 24; i++)
-	{
-		for (int j = 0; j < 4; j++)
-			tempVec[j] = 0;
+	//Get variables to store the venterpoint's values before they change
+	float origCenterX = centerPoint[0];
+	float origCenterY = centerPoint[1];
+	float origCenterZ = centerPoint[2];
 
-		for (int j = 0; j < 4; j++)
-		{
-			for (int k = 0; k < 4; k++)
-			{
-				tempVec[j] += vertices[i][k] * translationMat[j][k];
-			}
-		}
+	//Translate the cube to the origin
+	this -> translateX(-1.0 * origCenterX);
+	this -> translateY(-1.0 * origCenterY);
+	this -> translateZ(-1.0 * origCenterZ);
 
-		for (int j = 0; j < 4; j++)
-			vertices[i][j] = tempVec[j];
+	matMultiply(rotateMat, false);	//Perform the matrix multiplication for the transformation
 
-	}
-
-	/*
-	for (int i = 0; i < 24; i++)
-	{
-		vertices[i][0] = vertices[i][0] + previousX;
-		vertices[i][1] = vertices[i][1] + previousY;
-		vertices[i][2] = vertices[i][2] + previousZ;
-	}
-	*/
-	
+	//Translate the cube to the original location
+	this -> translateX(origCenterX);
+	this -> translateY(origCenterY);
+	this -> translateZ(origCenterZ);
 }
 
-//Translates the model up by amount
-//Pre: amount is defined
-//Post: all the verticies of the cube are translated up.
+//Translates the model across the y-axis by a given amount
+//Pre: amount is defined.
+//Post: all the verticies in the cube are translatedalong the y-axis by amount.
 void Cube::translateY(float amount)
 {
 	
-	GLfloat GLamount = amount;
+	GLfloat GLamount = amount;	//Convert the given float value to a GLfloat
 
-	vmath::mat4 translationMat = vmath::translate(0.0f, GLamount, 0.0f);
-	vmath::vec4 tempVec;
+	vmath::mat4 translationMat = vmath::translate(0.0f, GLamount, 0.0f);	//Declare and initalize the matrix used for this type of multiplication
+	
 
-	for (int i = 0; i < 24; i++)
-	{
-		for (int j = 0; j < 4; j++)
-			tempVec[j] = 0;
+	matMultiply(translationMat, true);	//Perform the matrix multiplication for the transformation
 
-		for (int j = 0; j < 4; j++)
-		{
-			for (int k = 0; k < 4; k++)
-			{
-				tempVec[j] += vertices[i][k] * translationMat[k][j];
-			}
-		}
-
-		for (int j = 0; j < 4; j++)
-			vertices[i][j] = tempVec[j];
-
-	}
-
+	centerPoint[1] += amount;	//Update the center point's location
 }
 
 
-//Translates the model left by amount
+//Translates the model across the z-axis by a given amount
 //Pre: amount is defined.
-//Post: all the verticies in the cube are translated left by amount.
-void Cube::translateLeft(float amount)
+//Post: all the verticies in the cube are translatedalong the z-axis by amount.
+void Cube::translateZ(float amount)
 {
-	for (int i = 0; i < 24; i++)
-	{
-		vertices[i][0] -= amount;
-	}
+	GLfloat GLamount = amount;	//Convert the given float value to a GLfloat
+
+	vmath::mat4 translationMat = vmath::translate(0.0f, 0.0f, GLamount);	//Declare and initalize the matrix used for this type of multiplication
+
+
+	matMultiply(translationMat, true);	//Perform the matrix multiplication for the transformation
+
+	centerPoint[2] += amount;	//Update the center point's location
 }
 
-//Translates the model right by amount
+//Translates the model across the x-axis by a given amount
 //Pre: amount is defined.
-//Post: all the verticies in the cube are translated right by amount.
-void Cube::translateRight(float amount)
+//Post: all the verticies in the cube are translatedalong the x-axis by amount.
+void Cube::translateX(float amount)
 {
-	for (int i = 0; i < 24; i++)
-	{
-		vertices[i][0] += amount;
-	}
+	
+	GLfloat GLamount = amount;	//Convert the given float value to a GLfloat
+
+	vmath::mat4 translationMat = vmath::translate(GLamount, 0.0f, 0.0f);	//Declare and initalize the matrix used for this type of multiplication
+	
+
+	matMultiply(translationMat, true);	//Perform the matrix multiplication for the transformation
+
+	centerPoint[0] += amount;	//Update the center point's location
 }
 
 //Returns this object's vertex vector
