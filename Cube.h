@@ -46,14 +46,21 @@ public:
 	void translateX(float);	//Translates the model's x value by a given amount
 	void translateZ(float);	//Translates the model's z value by a given amount
 
+<<<<<<< HEAD
 	vec4 getAngles();	//Returns the angles vector
+=======
+	//vec4 getAngles();	//Returns the angles vector
+>>>>>>> origin/master
 
 	void setTexture(std::vector<GLuint>);	//changes the current texture to a new given texture
 
 	GLfloat** getVertices();	//Returns the 2D array of vertices pointer
 	GLfloat** getTexies();		//Returns the 2D array of texies pointer
+<<<<<<< HEAD
 		
 
+=======
+>>>>>>> origin/master
 	void drawSelf();
 	void setTextureID(GLuint);
 	GLuint VAOs;

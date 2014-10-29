@@ -39,7 +39,13 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	
 	//Assign all sides their corrosponding x and y values
 
-	//Side 1 the front side
+	//Set the values of the centerpoint of this cube
+	centerPoint[0] = x + length/2.0;
+	centerPoint[1] = y - length/2.0;
+	centerPoint[2] = z - length/2.0;
+	centerPoint[3] = 1.0;
+
+	//Side 1 the backmost side
 	vertices[0][0] = x;	//sets the x, y, z value for the 
 	vertices[0][1] = y;	//first vertex of the first side.
 	vertices[0][2] = z; //the top left back corner
@@ -191,10 +197,12 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 	
 	glGenVertexArrays(1, &VAOs);
 	glBindVertexArray(VAOs);
-
+	glEnableVertexAttribArray(VAOs);
+	
 	glGenBuffers(2, Buffers);
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[0]);
 	glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
+
 
 	glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 	glEnableVertexAttribArray( 0 );
@@ -214,12 +222,6 @@ void Cube::setTextureID(GLuint newTexID)
 	//says use the GL_TEXTURE_RECTANGLE format for the texture ID stored in
 	//texture
 	glBindTexture(GL_TEXTURE_2D, texture);
-
-	//Set the values of the centerpoint of this cube
-	centerPoint[0] = x + length/2.0;
-	centerPoint[1] = y - length/2.0;
-	centerPoint[2] = z - length/2.0;
-	centerPoint[3] = 1.0;
 }
 
 
@@ -401,12 +403,15 @@ void Cube::translateX(float amount)
 	centerPoint[0] += amount;	//Update the center point's location
 }
 
+<<<<<<< HEAD
 
 //changes the current texture to a new given texture
 void Cube::setTexture(std::vector<GLuint> newTexture)
 {
 
 }
+=======
+>>>>>>> origin/master
 
 //=========================================================
 //getVertices()
