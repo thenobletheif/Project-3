@@ -24,10 +24,10 @@
 class Cube{
 private:
 	float length;	//the length of the side of the cube
-	std::vector<GLuint> textureID;	//the id for the cube's texture
 	GLfloat** vertices;	//A two dimensional array of the verticies.
 						//defined as a pointer to a pointer, hence the **
 	GLfloat** texies;
+	GLuint texture;
 	
 
 public:
@@ -41,10 +41,11 @@ public:
 	void translateLeft(float);	//Translates the model left by a given amount
 	void translateRight(float);	//Translates the model right by a given amount
 
-	void setTexture(std::vector<GLuint>);	//changes the current texture to a new given texture
-
+	void drawSelf();
+	void setTextureID(GLuint);
+	GLuint VAOs;
+	GLuint Buffers[2];
+	
 	GLfloat** getVertices();
 	GLfloat** getTexies();
-		
-
 };
