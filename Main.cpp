@@ -50,6 +50,7 @@ Camera hunterCam = Camera();
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 GLfloat vertices[96][4];		//Array of all vertices
 GLfloat texies [72][2];
 Cube* models[4];				//Array of every cube object
@@ -58,6 +59,11 @@ GLfloat vertices[96][4];
 Cube* models[4];
 >>>>>>> origin/master
 
+=======
+GLfloat vertices[72][4];
+GLfloat texies [72][2];
+Cube* models[3];
+>>>>>>> parent of 306a9f9... Highlighting
 =======
 GLfloat vertices[72][4];
 GLfloat texies [72][2];
@@ -149,6 +155,7 @@ void init()
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //=========================================================
 //updateHighlight()
 //
@@ -179,6 +186,8 @@ void updateHighlight()
 //Pre:
 //Post: vertices has changed
 =======
+=======
+>>>>>>> parent of 306a9f9... Highlighting
 //a function that handles updating the verticies 
 //after the vertices have been updated in the cube.
 >>>>>>> parent of 306a9f9... Highlighting
@@ -504,6 +513,9 @@ void moveHandler(int direction)
 =======
 	float moveDistance = 0.1;
 
+<<<<<<< HEAD
+>>>>>>> parent of 306a9f9... Highlighting
+=======
 >>>>>>> parent of 306a9f9... Highlighting
 	switch(direction)
 	{
@@ -552,15 +564,19 @@ void display()
 	glLineWidth(2);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//each of the cubes uses its own draw self functions
 	for (int i = 0; i < 3; i++)
 =======
+=======
+>>>>>>> parent of 306a9f9... Highlighting
 	for (int i = 0; i < 18; i++)
 >>>>>>> parent of 306a9f9... Highlighting
 	{
 		models[i]->drawSelf();
 	}	
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	/*glLineWidth(100);
 	//Draw the highlight cube
@@ -570,6 +586,8 @@ void display()
 	}*/
 
 =======
+=======
+>>>>>>> parent of 306a9f9... Highlighting
 	
 >>>>>>> parent of 306a9f9... Highlighting
 
