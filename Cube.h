@@ -30,14 +30,14 @@ private:
 	GLuint texture;
 
 	vec4 centerPoint;	//Stores the centerpoint of the cube
-
+	vec4 angles;		//Stores the different angles this cube has been rotated around each axis
 
 	void matMultiply(vmath::mat4, bool);	//Performs a matrix multiplication on this cube's vertices
 	
 
 public:
-	Cube();
-	Cube(float, GLfloat, GLfloat, GLfloat);
+	Cube();		//Default constructor
+	Cube(float, GLfloat, GLfloat, GLfloat);		//Constructor
 
 	void scale(float);			//Scales the model by a given factor
 	void rotate(float, int);			//Rotates the model by a given amount
@@ -46,6 +46,16 @@ public:
 	void translateX(float);	//Translates the model's x value by a given amount
 	void translateZ(float);	//Translates the model's z value by a given amount
 
+<<<<<<< HEAD
+	vec4 getAngles();	//Returns the angles vector
+
+	void setTexture(std::vector<GLuint>);	//changes the current texture to a new given texture
+
+	GLfloat** getVertices();	//Returns the 2D array of vertices pointer
+	GLfloat** getTexies();		//Returns the 2D array of texies pointer
+		
+
+=======
 	void drawSelf();
 	void setTextureID(GLuint);
 	GLuint VAOs;
@@ -53,4 +63,5 @@ public:
 	
 	GLfloat** getVertices();
 	GLfloat** getTexies();
+>>>>>>> origin/master
 };

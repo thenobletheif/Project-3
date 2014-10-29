@@ -1,5 +1,5 @@
 /* Main.cpp
-* Author: Hunter Ripsom-Gardiner
+* Author: Hunter Ripsom-Gardiner & Alex Deacon
 * Date: 10/16/14 
 * Course: CSC 5210 Graphics
 * Description: A program that makes a 3D scene, populates
@@ -41,18 +41,25 @@ GLuint VAOs[ NUM_VAOS ];
 GLuint Buffers[ NUM_BUFFERS ];
 GLuint Textures[ NUM_TEXTURES ];
 
-int currentCube = 0;
-int numCubes = 3;
+int currentCube = 0;		//Keeps track fo the currently selected cube
+int numCubes = 3;			//The number of cubes on the screen
 const int WINDOW_X = 512;
 const int WINDOW_Y = 512;
 
 Camera hunterCam = Camera();
 
+<<<<<<< HEAD
+GLfloat vertices[96][4];		//Array of all vertices
+GLfloat texies [72][2];
+Cube* models[4];				//Array of every cube object
+=======
 GLfloat vertices[96][4];
 Cube* models[4];
+>>>>>>> origin/master
 
 
 void updateVertices();
+bool detectCollideOnCurrent();
 
 
 // Will give all the cubes a texture randomly out of the given
@@ -137,8 +144,14 @@ void init()
 	glEnableVertexAttribArray( 1 );
 }
 
+//=========================================================
 //updateHighlight()
-// Updates and loads the highlight
+//
+//updates the highlight cube, so it changes it shape to become the same as the cube
+// it is highlighting
+//
+//Pre:
+//Post: the highlight cube's vertices
 void updateHighlight()
 {
 	GLfloat** tempArray = models[currentCube] -> getVertices();
@@ -152,8 +165,14 @@ void updateHighlight()
 		}
 	}
 }
-//a function that handles updating the verticies 
-//after the vertices have been updated in the cube.
+
+//=========================================================
+//updateVertices()
+//
+//Updates the main array of vertices with the current vertices of every cube
+//
+//Pre:
+//Post: vertices has changed
 void updateVertices()
 {
 	GLfloat** tempArray;
@@ -173,25 +192,301 @@ void updateVertices()
 	}
 }
 
-//a handler for scaling the cube.
+//=========================================================
+//detectCollision()
+//
+//Uses detectOnCollide to determine, for each cube, whether any collisions have occured
+//
+//Pre:
+//Post: A true or false is returned
+bool detectCollision()
+{
+	int actualCurCube = currentCube;
+
+	if (!(detectCollideOnCurrent()))
+	{
+		currentCube = (currentCube + 1)%numCubes;
+
+		if (!(detectCollideOnCurrent()))
+		{
+			currentCube = (currentCube + 1)%numCubes;
+
+			if (!(detectCollideOnCurrent()))
+			{
+				currentCube = actualCurCube;
+				return false;
+			}
+		}
+	}
+
+	currentCube = actualCurCube;
+	return true;
+}
+
+//=========================================================
+//detectCollideOnCurrent()
+//
+//detects the collision of every other cube on the current cube
+//
+//Pre: the cubes' vertices are initialized
+//Post: true or false returned
+bool detectCollideOnCurrent()
+{
+	vec4 referenceAngles = models[currentCube] -> getAngles();
+
+	//Holds the upper and lower boundaries for the x, y, and z values
+	vec4 upperBounds;
+	vec4 lowerBounds;
+
+	//Holds the vertices of each of the cubes
+	GLfloat** vertices1 = models[0] -> getVertices();
+	GLfloat** vertices2 = models[1] -> getVertices();
+	GLfloat** vertices3 = models[2] -> getVertices();
+
+	GLfloat boundaries1[8][4];
+	GLfloat boundaries2[8][4];
+	GLfloat boundaries3[8][4];
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			boundaries1[i][j] = vertices1[i][j];
+			boundaries2[i][j] = vertices2[i][j];
+			boundaries3[i][j] = vertices3[i][j];
+		}
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			boundaries1[i + 4][j] = vertices1[i + 8][j];
+			boundaries2[i + 4][j] = vertices2[i + 8][j];
+			boundaries3[i + 4][j] = vertices3[i + 8][j];
+		}
+	}
+
+	//============================================================================
+	//Rotate the the cubes
+	vmath::mat4 transformMat = vmath::rotate(referenceAngles[0], 1.0f, 0.0f, 0.0f);
+	vmath::vec4 tempVec;	//Will hold the resulting vector values of the matrix multiplication
+	GLfloat reverseFactor = -1.0f;
+
+
+	for (int k = 0; k < 3; k++)
+	{
+		if (k == 0)
+			transformMat = vmath::rotate(reverseFactor * referenceAngles[0], 1.0f, 0.0f, 0.0f);
+		else if (k == 1)
+			transformMat = vmath::rotate(reverseFactor * referenceAngles[1], 0.0f, 1.0f, 0.0f);
+		else
+			transformMat = vmath::rotate(reverseFactor * referenceAngles[2], 0.0f, 0.0f, 1.0f);
+
+		for (int i = 0; i < 8; i++)
+		{
+			//Set each value of the temporary vector to 0, for use with this current vertex
+			for (int j = 0; j < 4; j++)
+				tempVec[j] = 0;
+
+			//Perform the matrix multiplication and store the resulting vector
+			for (int j = 0; j < 4; j++)
+				for (int k = 0; k < 4; k++)
+					tempVec[j] += boundaries1[i][k] * transformMat[j][k];
+
+			//Copy the new values into the vertices array
+			for (int j = 0; j < 4; j++)
+				boundaries1[i][j] = tempVec[j];
+		}
+	}
+
+	//
+	for (int k = 0; k < 3; k++)
+	{
+		if (k == 0)
+			transformMat = vmath::rotate(reverseFactor * referenceAngles[0], 1.0f, 0.0f, 0.0f);
+		else if (k == 1)
+			transformMat = vmath::rotate(reverseFactor * referenceAngles[1], 0.0f, 1.0f, 0.0f);
+		else
+			transformMat = vmath::rotate(reverseFactor * referenceAngles[2], 0.0f, 0.0f, 1.0f);
+
+		for (int i = 0; i < 8; i++)
+		{
+			//Set each value of the temporary vector to 0, for use with this current vertex
+			for (int j = 0; j < 4; j++)
+				tempVec[j] = 0;
+
+			//Perform the matrix multiplication and store the resulting vector
+			for (int j = 0; j < 4; j++)
+				for (int k = 0; k < 4; k++)
+					tempVec[j] += boundaries2[i][k] * transformMat[j][k];
+
+			//Copy the new values into the vertices array
+			for (int j = 0; j < 4; j++)
+				boundaries2[i][j] = tempVec[j];
+		}
+	}
+
+	for (int k = 0; k < 3; k++)
+	{
+		if (k == 0)
+			transformMat = vmath::rotate(reverseFactor * referenceAngles[0], 1.0f, 0.0f, 0.0f);
+		else if (k == 1)
+			transformMat = vmath::rotate(reverseFactor * referenceAngles[1], 0.0f, 1.0f, 0.0f);
+		else
+			transformMat = vmath::rotate(reverseFactor * referenceAngles[2], 0.0f, 0.0f, 1.0f);
+
+		for (int i = 0; i < 8; i++)
+		{
+			//Set each value of the temporary vector to 0, for use with this current vertex
+			for (int j = 0; j < 4; j++)
+				tempVec[j] = 0;
+
+			//Perform the matrix multiplication and store the resulting vector
+			for (int j = 0; j < 4; j++)
+				for (int k = 0; k < 4; k++)
+					tempVec[j] += boundaries3[i][k] * transformMat[j][k];
+
+			//Copy the new values into the vertices array
+			for (int j = 0; j < 4; j++)
+				boundaries3[i][j] = tempVec[j];
+		}
+	}
+	//end rotation
+	//========================================================================
+
+	if (currentCube == 0)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (boundaries1[0][i] > boundaries1[7][i])
+			{
+				upperBounds[i] = boundaries1[0][i];
+				lowerBounds[i] = boundaries1[7][i];
+			}
+			else
+			{
+				upperBounds[i] = boundaries1[7][i];
+				lowerBounds[i] = boundaries1[0][i];
+			}
+		}
+		for (int i = 0; i < 8; i++)
+		{
+			if (!(boundaries2[i][0] > upperBounds[0] || boundaries2[i][0] < lowerBounds[0]) && 
+				!(boundaries2[i][1] > upperBounds[1] || boundaries2[i][1] < lowerBounds[1]) &&
+				!(boundaries2[i][2] > upperBounds[2] || boundaries2[i][2] < lowerBounds[2]))
+				return true;
+			if (!(boundaries3[i][0] > upperBounds[0] || boundaries3[i][0] < lowerBounds[0]) && 
+				!(boundaries3[i][1] > upperBounds[1] || boundaries3[i][1] < lowerBounds[1]) &&
+				!(boundaries3[i][2] > upperBounds[2] || boundaries3[i][2] < lowerBounds[2]))
+				return true;
+		}
+	}
+	else if (currentCube == 1)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (boundaries2[0][i] > boundaries2[7][i])
+			{
+				upperBounds[i] = boundaries2[0][i];
+				lowerBounds[i] = boundaries2[7][i];
+			}
+			else
+			{
+				upperBounds[i] = boundaries2[7][i];
+				lowerBounds[i] = boundaries2[0][i];
+			}
+		}
+
+		for (int i = 0; i < 8; i++)
+		{
+			if (!(boundaries1[i][0] > upperBounds[0] || boundaries1[i][0] < lowerBounds[0]) && 
+				!(boundaries1[i][1] > upperBounds[1] || boundaries1[i][1] < lowerBounds[1]) &&
+				!(boundaries1[i][2] > upperBounds[2] || boundaries1[i][2] < lowerBounds[2]))
+				return true;
+			if (!(boundaries3[i][0] > upperBounds[0] || boundaries3[i][0] < lowerBounds[0]) && 
+				!(boundaries3[i][1] > upperBounds[1] || boundaries3[i][1] < lowerBounds[1]) &&
+				!(boundaries3[i][2] > upperBounds[2] || boundaries3[i][2] < lowerBounds[2]))
+				return true;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (boundaries3[0][i] > boundaries3[7][i])
+			{
+				upperBounds[i] = boundaries3[0][i];
+				lowerBounds[i] = boundaries3[7][i];
+			}
+			else
+			{
+				upperBounds[i] = boundaries3[7][i];
+				lowerBounds[i] = boundaries3[0][i];
+			}
+		}
+
+		for (int i = 0; i < 8; i++)
+		{
+			if (!(boundaries1[i][0] > upperBounds[0] || boundaries1[i][0] < lowerBounds[0]) && 
+				!(boundaries1[i][1] > upperBounds[1] || boundaries1[i][1] < lowerBounds[1]) &&
+				!(boundaries1[i][2] > upperBounds[2] || boundaries1[i][2] < lowerBounds[2]))
+				return true;
+			if (!(boundaries2[i][0] > upperBounds[0] || boundaries2[i][0] < lowerBounds[0]) && 
+				!(boundaries2[i][1] > upperBounds[1] || boundaries2[i][1] < lowerBounds[1]) &&
+				!(boundaries2[i][2] > upperBounds[2] || boundaries2[i][2] < lowerBounds[2]))
+				return true;
+		}
+	}
+
+	return false;
+}
+
+//=========================================================
+//scaleHandler()
+//
+//Scales the current cube by a given factor
+//
+//Pre: scale is initialized
+//Post: A cube may have been scaled by a certain amount
 void scaleHandler(float scale)
 {
 	models[currentCube] -> scale(scale);
+	if (detectCollision())
+	{
+		std::cout << "IT CAME OUT TRUE";
+		if (scale <= 0.80)
+			models[currentCube] -> scale(1.25);
+		else
+			models[currentCube] -> scale(0.80);
+	}
 	updateVertices();
 }
 
-//a handler for rotating the cube
+//=========================================================
+//rotationHandler()
+//
+//Translates the current cube a certain way based on the passed variable
+//
+//Pre: direction is initialized
+//Post: A cube may have been translated by a certain amount
 void rotationHandler(bool clockwise, int state)
 {
 	//if the cube is rotating clockwise rotate 0.5 units
 	//otherwise rotate -0.5 units.
 	float amount;
 	if(clockwise)
-		amount = 0.5;
+		amount = 1.0;
 	else
-		amount = -0.5;
+		amount = -1.0;
 
+	//Detect collision, and reverse changes if one is found
 	models[currentCube] -> rotate(amount, state);
+	if (detectCollision())
+	{
+		models[currentCube] -> rotate( -1.0 * amount, state);
+	}
+
 	updateVertices();
 }
 
@@ -204,22 +499,36 @@ void rotationHandler(bool clockwise, int state)
 //Post: A cube may have been translated by a certain amount
 void moveHandler(int direction)
 {
-	float moveDistance = 0.1;
-
 	//Depending on the direction input, translate the current cube a certain way
 	switch(direction)
 	{
 	case 1:
 		models[currentCube] -> translateX(-0.1);
+		if (detectCollision())
+		{
+			models[currentCube] -> translateX(0.1);
+		}
 		break;
 	case 2:
 		models[currentCube] -> translateY(-0.1);
+		if (detectCollision())
+		{
+			models[currentCube] -> translateY(0.1);
+		}
 		break;
 	case 3:
 		models[currentCube] -> translateX(0.1);
+		if (detectCollision())
+		{
+			models[currentCube] -> translateX(-0.1);
+		}
 		break;
 	case 4:
 		models[currentCube] -> translateY(0.1);
+		if (detectCollision())
+		{
+			models[currentCube] -> translateY(-0.1);
+		}
 		break;
 	default:
 		cout<< "ERROR: Somehow you are trying to move in the " <<endl;
