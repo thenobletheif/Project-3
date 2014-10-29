@@ -207,6 +207,7 @@ Cube::Cube(float sideLength, GLfloat x, GLfloat y, GLfloat z)
 
 }
 
+
 void Cube::setTextureID(GLuint newTexID)
 {
 	GLuint texture = newTexID;
@@ -220,6 +221,8 @@ void Cube::setTextureID(GLuint newTexID)
 	centerPoint[2] = z - length/2.0;
 	centerPoint[3] = 1.0;
 }
+
+
 
 //=========================================================
 //matMultiply()
@@ -398,7 +401,7 @@ void Cube::translateX(float amount)
 	centerPoint[0] += amount;	//Update the center point's location
 }
 
-<<<<<<< HEAD
+
 //changes the current texture to a new given texture
 void Cube::setTexture(std::vector<GLuint> newTexture)
 {
@@ -412,9 +415,6 @@ void Cube::setTexture(std::vector<GLuint> newTexture)
 //
 //Pre:
 //Post: a 2D pointer is returned
-=======
-//Returns this object's vertex vector
->>>>>>> origin/master
 GLfloat** Cube::getVertices()
 {
 	return vertices;

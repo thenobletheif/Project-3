@@ -48,14 +48,9 @@ const int WINDOW_Y = 512;
 
 Camera hunterCam = Camera();
 
-<<<<<<< HEAD
 GLfloat vertices[96][4];		//Array of all vertices
 GLfloat texies [72][2];
 Cube* models[4];				//Array of every cube object
-=======
-GLfloat vertices[96][4];
-Cube* models[4];
->>>>>>> origin/master
 
 
 void updateVertices();
