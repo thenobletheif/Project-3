@@ -49,6 +49,7 @@ const int WINDOW_Y = 512;
 Camera hunterCam = Camera();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 GLfloat vertices[96][4];		//Array of all vertices
 GLfloat texies [72][2];
 Cube* models[4];				//Array of every cube object
@@ -57,6 +58,11 @@ GLfloat vertices[96][4];
 Cube* models[4];
 >>>>>>> origin/master
 
+=======
+GLfloat vertices[72][4];
+GLfloat texies [72][2];
+Cube* models[3];
+>>>>>>> parent of 306a9f9... Highlighting
 
 void updateVertices();
 bool detectCollideOnCurrent();
@@ -77,8 +83,6 @@ void init()
 	models[0] = new Cube(0.3f, -0.65f, 0.15f, 0.0f);
 	models[1] = new Cube(0.3f, -0.15f, 0.15f, 0.0f);
 	models[2] = new Cube(0.3f, 0.35f, 0.15f, 0.0f);
-	models[3] = new Cube(0.3f, -0.65f, 0.15f, 0.0f);
-
 	updateVertices();
 
 	ShaderInfo shaders[] = {
@@ -144,6 +148,7 @@ void init()
 	glEnableVertexAttribArray( 1 );
 }
 
+<<<<<<< HEAD
 //=========================================================
 //updateHighlight()
 //
@@ -173,13 +178,14 @@ void updateHighlight()
 //
 //Pre:
 //Post: vertices has changed
+=======
+//a function that handles updating the verticies 
+//after the vertices have been updated in the cube.
+>>>>>>> parent of 306a9f9... Highlighting
 void updateVertices()
 {
 	GLfloat** tempArray;
-
-	updateHighlight();
-
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		tempArray = models[i] -> getVertices();
 		for (int j = 0; j < 24; j++)
@@ -490,16 +496,15 @@ void rotationHandler(bool clockwise, int state)
 	updateVertices();
 }
 
-//=========================================================
-//movehandler()
-//
-//Translates the current cube a certain way based on the passed variable
-//
-//Pre: direction is initialized
-//Post: A cube may have been translated by a certain amount
+//a handler for moving the cubes
 void moveHandler(int direction)
 {
+<<<<<<< HEAD
 	//Depending on the direction input, translate the current cube a certain way
+=======
+	float moveDistance = 0.1;
+
+>>>>>>> parent of 306a9f9... Highlighting
 	switch(direction)
 	{
 	case 1:
@@ -546,12 +551,17 @@ void display()
 
 	glLineWidth(2);
 
+<<<<<<< HEAD
 	//each of the cubes uses its own draw self functions
 	for (int i = 0; i < 3; i++)
+=======
+	for (int i = 0; i < 18; i++)
+>>>>>>> parent of 306a9f9... Highlighting
 	{
 		models[i]->drawSelf();
 	}	
 
+<<<<<<< HEAD
 	/*glLineWidth(100);
 	//Draw the highlight cube
 	for (int i = 18; i < 24; i++)
@@ -559,6 +569,9 @@ void display()
 		glDrawArrays(GL_LINE_STRIP, i * 4, 4);
 	}*/
 
+=======
+	
+>>>>>>> parent of 306a9f9... Highlighting
 
 	// Clear the screen
 	glFlush();
@@ -593,7 +606,6 @@ void keyboard(unsigned char key, int x, int y)
 	case 'M':
 		currentCube += 1;
 		currentCube %= numCubes;
-		updateVertices();
 		break;
 
 	//scaling section of code
